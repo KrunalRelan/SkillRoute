@@ -1,0 +1,54 @@
+.timeline-active{
+	&.style-1{
+		.timeline-list{
+			position: relative;
+		   padding: 1.1rem 0;
+			
+			&:before{
+				    top: 2.375rem;
+				    bottom: 0;
+				    position: absolute;
+				    content: " ";
+				    width: 0.125rem;
+				    height: calc(100% - 0.875rem);
+				    left: 0.463rem;
+				    margin-right: -0.0938rem;
+				    background: $border-main-color; 	
+				 @include respond ('laptop'){
+					left:0.563rem;
+					top:2.575rem;
+				 }
+				 @include respond ('phone'){
+					left:0.463rem;
+				 }
+			}
+			
+			.modulel{
+				display:flex;
+				align-items:center;
+				
+				img{
+					width:17.375rem!important;
+					height:10.125rem;
+					border-radius:$radius;
+					margin-left:0.625rem;
+					object-fit:cover;
+					@include respond ('laptop'){
+						margin-bottom:0.625rem;
+						
+					}
+				}
+			}
+		}
+		span,
+		.time{
+			font-size:13px;
+			margin-left:10px;
+			margin-bottom:0;
+		}
+		.last-timeline{
+			padding-top:19px;
+		}
+	}
+  
+}

@@ -1,0 +1,107 @@
+.schedule-card,
+.schedule-card-1,
+.schedule-card-2,
+.schedule-card-3{
+	position:relative;
+	overflow:hidden;
+	.card-body{
+		padding-top:24px;
+		padding-bottom:24px;
+		margin-left:3px;
+	}
+	
+	&:after{
+		content:"";
+		position:absolute;
+		background-color:var(--primary);
+		width:0.438rem;
+		height:12.188rem;
+		top:0;
+		left:0;
+	}
+}
+.schedule-card-1{
+	&:after{
+		background-color:var(--secondary);
+	}
+}
+.schedule-card-2{
+	&:after{
+		background-color:$warning;
+	}
+}
+.schedule-card-3{
+	&:after{
+		background-color:$dark;
+	}
+}
+.student-details{
+	display:flex;
+	align-items:center;
+	
+	@include custommq($max:100rem){
+		margin-bottom:10px;
+	}
+
+	@include respond('tab-land'){
+		margin-bottom:10px;
+
+	}
+
+
+}
+.setting-img{
+	img{
+		width:7.5rem;
+		height:7.5rem;
+		border-radius:$radius;
+		object-fit:cover;
+	}
+	.change{
+		border-radius:$radius-sm;
+		
+		padding:0.688rem 0.875rem;
+	
+		@include respond ('phone'){
+			margin-left:1rem;
+		}
+	}
+	@include respond ('phone'){
+		    flex-wrap: wrap;
+	}
+}
+.avatar-upload {
+    .avatar-edit {
+        position: absolute;
+        right: 0.75rem;
+        z-index: 1;
+        top: 0.625rem;
+    }
+    .avatar-preview {
+        > div {
+          display:inline-block;
+			width:6.5rem;
+			height:6.5rem;
+			background-size:cover;
+			background-repeat:no-repeat;
+			background-position: center;
+			border-radius:$radius-sm;
+        }
+    }
+}
+ input.form-control{
+	position:relative;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+

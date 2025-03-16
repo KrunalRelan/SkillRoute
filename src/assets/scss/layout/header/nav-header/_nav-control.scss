@@ -1,0 +1,331 @@
+[data-sidebar-style="mini"],
+[data-layout="horizontal"] {
+    .nav-control {
+        display: none;
+    }
+}
+
+[data-sidebar-style="overlay"] {
+    @include respond('phone-land') {
+        .nav-header .logo-abbr {
+            display: block;
+        }
+    }
+}
+
+[data-header-position="fixed"] {
+    .nav-header {
+        position: fixed;
+    }
+}
+
+.nav-header {
+	height: 5rem;
+    width:var(--width);
+    display: inline-block;
+	background-color: var(--nav-headbg);
+    text-align: left;
+    position: absolute;
+    top:0;
+    // background-color: #D5DFE7;
+    transition: all .2s ease;
+    z-index: 5;
+	
+    .logo-abbr {
+        max-width: 2.9375rem;
+		@include respond('laptop') {
+			max-width: 2.8125rem;
+		}
+		@include respond('phone') {
+			width:4.1875rem;
+			height:4.1875rem;
+		}
+    }
+    .logo-compact {
+        display: none;
+    }
+	
+	@include respond ('laptop'){
+		height:6.5rem;
+        width: 17rem;
+	}
+    .brand-logo {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 1.125rem;
+        color: $white;
+        text-decoration: none;
+        padding-left: 1.675rem;
+		padding-right: 1.675rem;
+        font-weight: 700;
+		
+		@include respond('laptop') {
+			padding-left: 1.25rem;
+			padding-right:1.25rem;
+		}
+		
+        [data-sidebar-style="compact"] &,
+        [data-sidebar-style="mini"] & {
+            padding-left: 0;
+            padding-right: 0;
+            justify-content: center;
+        }
+        @include respond('phone-land') {
+            padding-left: 0;
+            padding-right: 0;
+            justify-content: center;
+        }
+    }
+    .brand-title {
+		margin-left: 0.9375rem;
+		max-width: 8.75rem;
+		color: $black;
+        svg{
+
+            path{
+
+                fill:var(--primary      );  
+            }
+        }
+        @at-root [data-theme-version="dark"] & {
+            background-position: 0 120%;
+        }
+		h2{
+			line-height:0;
+			font-weight:bold;
+			font-size:1.75rem;
+			margin-bottom: 12px;
+		}
+		.brand-sub-title{
+			font-size:0.875rem;	
+			font-weight:400;
+			white-space:nowrap;
+			font-family: Nunito;
+			
+		}
+    }
+	@include respond ('phone-land'){
+		top:0px;
+		background:transparent;
+	}
+	@include respond ('phone'){
+		top:0px;
+	}
+	
+	.rect-primary-rect{
+		fill:var(--primary);
+	}
+}
+
+@include respond('tab-land') {
+	.nav-header {
+		height:5rem;
+    }
+}
+@include custommq($max:63.9375rem) {
+    .nav-header {
+        width: 5rem;
+        .brand-title {
+            display: none;
+        }
+    }
+}
+
+.nav-control {
+    cursor: pointer;
+    position: absolute;
+    right: -4rem;
+    text-align: center;
+    top: 46%;
+    transform: translateY(-43%);
+    z-index: 9999;
+    font-size: 1.4rem;
+	background: transparent;
+	height: 2.5rem;
+	width: 2.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    border-radius: $radius;
+    @include respond('laptop') {
+		right: -4.1rem;
+		 top: 40%;
+	}
+	@include respond('tab-land') {
+		top: 45%;
+	}
+    @include respond('phone-land') {
+        right: -3rem;
+		top: 43%;
+		height: 43px;
+		width: 43px;
+    }
+	@include respond('phone') {
+        top: 43%;
+		height: 39px;
+		width: 39px;
+        right: -1.875rem;
+    }
+}
+
+////////////////////
+// Humbuger Icon
+////////////////////
+.hamburger {
+    display: inline-block;
+    left: 0.2rem;
+    position: relative;
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+    width: 1.625rem;
+    z-index: 999;
+    svg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+}
+
+.hamburger .line {
+    background: $main-color;
+    display: block;
+    height: 0.188rem;
+    border-radius: 0.1875rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    margin-right: auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+}
+.hamburger.is-active {
+	left: -0.9rem;
+    svg{
+        display: none;
+    }
+    line{
+        opacity: 1;
+    }
+}
+.hamburger .line:nth-child(1) {
+    width: 1.375rem;
+}
+
+.hamburger .line:nth-child(2) {
+    width: 1.375rem;
+}
+
+.hamburger .line:nth-child(3) {
+    width: 0.875rem;
+}
+
+.hamburger:hover {
+    cursor: pointer;
+}
+
+.hamburger:hover .line {
+    width: 1.625rem;
+}
+
+
+.hamburger.is-active .line:nth-child(1),
+.hamburger.is-active .line:nth-child(3) {
+    width: 0.625rem;
+    height: 0.125rem;
+}
+
+.hamburger.is-active .line:nth-child(2) {
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+    width: 1.375rem;
+    height: 0.125rem;
+}
+
+.hamburger.is-active .line:nth-child(1) {
+    -webkit-transform: translateY(2px) translateX(12px) rotate(45deg);
+    transform: translateY(2px) translateX(12px) rotate(45deg);
+}
+
+.hamburger.is-active .line:nth-child(3) {
+    -webkit-transform: translateY(-2px) translateX(12px) rotate(-45deg);
+    transform: translateY(-2px) translateX(12px) rotate(-45deg);
+}
+
+
+@media (min-width:47.9375rem) {
+    [data-sidebar-style="compact"] {
+        .nav-control {
+            display: none;
+        }
+        .nav-header {
+            width: 11.25rem;
+        }
+    }
+}
+
+[data-sidebar-style="full"][data-layout="vertical"] {
+    .menu-toggle {
+        .brand-title {
+            display: none;
+        }
+        .nav-header {
+            .logo-abbr {
+                display: block;
+            }
+        }
+    }
+}
+
+[data-sidebar-style="full"][data-layout="horizontal"] {
+    .logo-compact {
+        display: none;
+    }
+}
+
+[data-sidebar-style="mini"] {
+    .nav-header {
+		height: 5.3rem;
+        .logo-abbr {
+            display: block;
+        }
+		@include custommq($max: 100rem){
+			height: 6.1rem;
+		}
+		@include custommq($max: 64rem){
+			height: 5.5rem;
+		}
+    }
+}
+
+[data-sidebar-style="compact"][data-layout="vertical"] {
+    .nav-header {
+        .brand-title {
+            display: none;
+        }
+        .logo-compact {
+            max-width: 4.6875rem;
+        }
+    }
+}
+[data-sidebar-style="compact"][data-layout="horizontal"] {
+    .nav-header .brand-logo {
+        padding-left: 1.875rem;
+		padding-right: 1.875rem;
+		justify-content: start;
+    }
+}
+[data-sidebar-style="modern"][data-layout="vertical"] {
+    .nav-header {
+        width: 10.625rem;
+        .brand-title {
+            display: none;
+        }
+        .logo-compact {
+            display: none;
+        }
+    }
+}

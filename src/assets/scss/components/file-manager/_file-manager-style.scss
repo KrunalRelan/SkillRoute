@@ -1,0 +1,336 @@
+.file-drive{
+    border-bottom: 1px solid $border-light;
+    border-top: none;
+    border-radius: 0;
+    margin-bottom: 0;
+	@include respond('phone-land'){
+		border-top:1px solid $b-color;
+	}
+}
+.file_area{
+	.table-pagenation{
+		margin: 0;
+		background-color: $white;
+		padding: 0.813rem 5px;
+		flex-wrap: wrap;
+		p{
+			margin-bottom: 0;
+		}
+		.pagination{
+			margin-bottom: 0;
+		}
+		@include respond ('phone'){
+			display:none;
+		}
+	}
+}
+.drive {
+    display: flex;
+    padding: 0.625rem;
+    justify-content: flex-start;
+    align-items: center;
+	border: 1px solid $white;
+	border-radius: $radius;
+	@include transitionMedium ;
+	cursor: pointer;
+	.dz-folder{
+		margin-right: 0.625rem;
+		svg{
+			path{
+				fill:var(--primary);
+			}
+			@include custommq($max:100rem){
+				width: 65px;
+				height: 60px;
+			}
+			@include respond('laptop'){
+				width: 50px;
+				height: 50px;
+			}
+			@include respond('tab-port'){
+				width: 70px;
+				height: 50px;
+			}
+		}
+	
+	}
+    .dz-media{
+        width: 11.188rem;
+    }
+	.drive-content{
+		flex: 0 0 60%;
+		.title{
+			font-size: 1rem;
+		}
+		span{
+			font-size: 0.75rem;
+		}
+	}
+    .progress {
+        margin-bottom: 0.3rem;
+        background-color: var(--rgba-primary-1);
+        border: 1px solid var(--primary);
+        border-radius: 0.188rem;
+		width: 100%;
+		height: 0.938rem;
+		@include custommq($max:110rem){
+			width: 100%;
+		}
+		
+		// @include respond('laptop'){
+		// 	width: 7.188rem;
+		// }
+		// @include respond('tab-land'){
+		//     width: 10.188rem;
+		// }
+		// @include respond('tab-port'){
+		// 	width: 8rem;
+		// }
+	
+        .progress-bar{
+            border-radius: 0;
+        }
+    }
+	&:hover{
+		background-color: var(--rgba-primary-1);
+		border: 1px solid var(--primary);
+	}
+}
+
+.file-header{
+    border-bottom: 1px solid $border-light;
+    .page-titles{
+        margin-bottom: 0;
+        padding: 0;
+		flex-wrap: wrap;
+        .input-group.search-area{
+            width: 16rem;
+			@include respond('tab-port'){
+				width: 12rem;
+			}
+			@include respond ('phone'){
+				width:100%;
+				svg{
+					width:14px;
+					height:14px;
+
+				}
+
+			}
+        }
+    }
+    .file-path{
+        display: flex;
+        align-items: center;
+        margin-right: 0.625rem;
+        h4{
+            a{
+               font-size: 0.875rem;
+               margin-right: 0.5rem;
+            }
+        }
+		svg{
+			path{
+				fill:var(--primary);
+			}
+		}
+    } 
+   
+}
+.file-list{
+    display: flex;
+    align-items: center;
+	padding: 0.938rem;
+  
+	.dz-media{
+        margin-right: 0.8rem;
+		width: 2.813rem;
+		height: 2.5rem;
+		
+		 .dz-img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 0.313rem;
+			box-shadow: 0px 4px 10px rgba(0, 25, 39, 0.14);
+		 }
+		
+
+    }
+    .dz-info{
+        .title{
+            font-size: 0.938rem;
+            margin-bottom: 0;
+        }
+    }
+}
+.folder-layout-tab{
+	.feature-btn:first-child{
+		background:var(--primary);
+		color:#fff;
+		svg path{
+			fill:#fff;
+		}
+	}
+	&.grid{
+		.feature-btn{
+			&:first-child{
+				background:var(--rgba-primary-1);
+				color:#fff;
+				svg path{
+					fill:var(--primary);
+				}
+			}
+			&:last-child{
+				background:var(--primary);
+				color:#fff;
+				svg path{
+					fill:#fff;
+				}
+			}
+
+		}
+	}
+	.feature-btn{
+		
+	}
+	.file-media{
+		
+	}	
+}
+.folder-structure{
+	height: calc(100vh - 22.213rem);
+	overflow-y: scroll;
+	@include respond('laptop'){
+		height: calc(100vh - 25.75rem);
+	}
+	@include respond('tab-land'){
+		height: calc(100vh - 7.813rem);
+    	overflow-y: scroll;
+	}
+	@include respond('tab-port'){
+		height: calc(100vh - 3.313rem);
+	}
+	li{
+		border-bottom: 1px solid $border-light;
+	}
+	&.grid{ 
+		padding:1.875rem;
+		display: flex;
+		flex-wrap: wrap;
+		margin-left: -12px;
+   		margin-right: -12px;
+		   @include respond('tab-land'){
+			margin-left: 0; 
+			 margin-right: 0;
+			 
+		   }
+		li{
+			border:0;
+			max-width: 20%;
+			padding-left: 0.75rem;
+			padding-right: 0.75rem;
+			margin-bottom: 24px;
+			box-sizing: border-box;
+			@include custommq($max:100rem){
+				max-width: 25%;
+			}
+			@include respond('laptop'){
+				max-width: 33.33%;
+			}
+			@include respond('tab-port'){
+				max-width: 50%;
+				
+			}
+			@include respond('phone-land'){
+				max-width: 33.33%;
+			}
+			@include respond('phone'){
+				max-width: 50%;
+			}
+			.file-list{
+				display: block;		
+				align-items: center;
+				padding: 1.25rem;
+				text-align: center;
+				min-width: 15rem;
+				border: 1px solid transparent;
+    			border-radius: $radius;
+				@include custommq($max:100rem){
+					min-width: 13.75rem;
+				}
+				@include respond('laptop'){
+					min-width: 15rem;
+				}
+				@include respond('tab-land'){
+					min-width: 12.5rem;
+				}
+				@include custommq($max:64rem){
+					min-width: 11.125rem;
+				}
+				@include respond('tab-port'){
+					min-width: 100%;
+					padding: 1rem;
+				}
+				
+				@include respond('phone'){
+					padding: 0.625rem;
+				}
+				.dz-media{
+					height: 110px;
+					width: 140px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					margin-left: auto;
+					margin-right: auto;
+					margin-bottom: 10px;
+					.dz-img{
+						max-width: 100%;
+						max-height: 100%;
+						min-width: 100%;
+						border-radius: 10px;
+						box-shadow: 0px 10px 10px 0 rgba(0, 0, 0,  0.10);
+						
+					}
+					@include respond('tab-land'){
+						height: 90px;
+						width: 120px;
+					}
+					@include respond('tab-port'){
+						height: 90px;
+						width: 90px;
+					}
+				}
+				svg{
+					width:80px;
+					height:80px;
+					@include respond('tab-port'){
+						width: 60px;
+						height: 60px;
+					}
+				}
+				&:hover{
+					border: 1px solid var(--rgba-primary-5);
+					background: var(--rgba-primary-1);
+				}
+			}
+		}
+		@include respond ('phone'){
+			padding:1rem;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,207 @@
+.input-group{
+	&.user-search-area{
+		margin-top:0.875rem;
+		.input-group-text{
+			background-color:transparent;
+			border-color:$border-main-color
+			
+		}
+		.form-control{
+				border-left:0;
+				border-color:$border-main-color;
+			&:focus{
+				border-color:$border-main-color;
+			}
+		}
+	}
+}
+.timeline-active{
+	.timeline-list{
+		position: relative;
+        padding: 1.1rem 0;
+		
+		&:before{
+			    top: 2.275rem;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 0.125rem;
+    height: calc(100% - 0.875rem);
+    left: 13.4px;
+    margin-right: -0.0938rem;
+    background: $border-main-color; 	
+		}
+	}
+		span,
+		.time{
+			font-size:13px;
+			margin-left:10px;
+		}
+  
+}
+
+.plan-bx{
+	position:relative;
+	.plan-svg,
+	.plan-svg-1{
+		position:absolute;
+		bottom:0;
+		right:0;
+		z-index:0;
+
+		@include respond ('laptop'){
+			svg{
+				width:100px;
+				height:100px;
+	
+			}
+			right:-7px;
+
+		}
+		@include respond ('phone'){
+
+			right:8px;
+			svg{
+
+				width: 68px;
+				height: 146px;
+			}
+		}
+		@include respond ('tab-land'){
+			svg{
+				width:6.25rem;
+				height:9.375rem;
+			}
+				
+
+		}
+
+		
+	}
+	.plan-svg-1{
+		right:0.825rem;
+		z-index:1;
+		@include respond ('laptop'){
+			right:1.25rem;
+
+		}
+		@include respond ('tab-land'){
+
+			right:2.125rem;
+		}
+	}
+	
+}
+.photo-content{
+    position: relative;
+    .cover-photo{
+        background: url(../images/profile/12.jpg);
+        background-size: cover;
+        background-position: center;
+        min-height: 15.625rem;
+        width: 100%;
+        border-top-left-radius: $radius;
+        border-top-right-radius: $radius;
+    }
+
+}
+.user{
+	cursor:pointer;
+	&:hover{
+		.st-box{
+			background-color:var(--primary);
+			border-color:var(--primary);
+			svg{
+				path{
+					fill:$white;
+				}
+			}
+		}
+		a{
+			color:var(--primary);
+		}
+	}
+}
+.author-profile{
+	text-align:center;
+	.card-body{
+		padding: 0;
+	}
+	.author-media{
+		position: relative;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 20px;
+		display: inline-block;
+		img{
+			width: 130px;
+			border-radius: 100%;
+		}
+	}	
+	.author-info{
+		.title{
+			font-size:15px;
+			font-weight:500;
+			margin-bottom: 0;
+		}
+		span{
+			display:block;
+			color: $body-color;
+		}
+	}
+	.info-list{
+		li{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 15px;
+			border-top: 1px solid $border-color;
+			padding: 18px 30px;
+			color: $dark;
+			a{
+				color: $dark;
+			}
+			span{
+				color: $body-color;
+				font-weight: 500;
+			}
+		}
+	}
+	.card-footer {
+		padding: 30px;
+		display: block;
+		.form-control {
+			height: 45px;
+			border-color: $border-color;
+			overflow:hidden;
+		}
+	}
+	.upload-link {
+		position: absolute;
+		width: 35px;
+		height: 35px;
+		line-height: 32px;
+		background: #395ee2;
+		bottom: 0;
+		right: 0px;
+		box-shadow: 0 0 10px 0 rgba(0, 24, 128, 0.1);
+		border-radius: 100%;
+		color: #fff;
+		overflow: hidden;
+		border: 2px solid #fff;
+		.update-flie {
+			position: absolute;
+			opacity: 0;
+			z-index: 0;
+			width: 100%;
+			cursor: pointer;
+			left: 0;
+			height: 100%;
+		}
+	}
+}
+.m-b30{
+	margin-bottom:16px;
+}
+
+
