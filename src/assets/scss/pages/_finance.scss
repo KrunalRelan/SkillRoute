@@ -1,0 +1,20 @@
+.p-static{
+	.bootstrap-select{
+		width:130px!important;
+	}
+}
+.table-responsive{
+	.unpaid-Company{
+		thead{
+			background-color:unset;
+			th{
+				color:#000;
+			}
+			td{
+				span{
+					font-size:14px;
+				}
+			}
+		}
+	}
+}

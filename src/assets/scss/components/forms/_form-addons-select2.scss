@@ -1,0 +1,113 @@
+
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    border-radius: $radius;
+    border: 0.0625rem solid $border-main-color;
+    height: 3rem;
+    background: $white;
+	@at-root [data-theme-version="dark"] & {
+        background:$d-bg;
+		border-color:$d-border;
+    }
+		
+		
+    &:hover,&:focus,&.active{
+        box-shadow: none;
+    }
+}
+.destroy-selector,
+.single-event-unbind{
+	width: 100%;
+    border-color: #eeee;
+    height: 45px;
+    padding: 0 13px;
+    border-radius: 10px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 3rem;
+	color:$body-color;
+	padding-left: 0.9375rem;
+	min-height: 2.5rem;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border-color: $border-main-color;
+    border-radius: 0;
+	
+}
+
+.select2-dropdown {
+    border-radius: 0;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--primary);
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: $border-main-color;
+    background: $white;
+	padding: 0.2rem 0;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 0.675rem;
+    right: 0.9375rem;
+}
+.select2-container .select2-selection--multiple{
+	min-height: 3rem;
+	color:$body-color;
+	border-radius: $radius;
+	border: 0.0625rem solid $border-main-color;
+	@at-root [data-theme-version="dark"] & {
+        background:$d-bg;
+		border-color:$d-border;
+    }
+}
+.select2-search--dropdown .select2-search__field{
+	@at-root [data-theme-version="dark"] & {
+        background:$dark-card;
+		border-color:$d-border;
+		color:rgba(255,255,255,0.6);
+    }
+}
+.select2-dropdown{
+	border-color: $light;
+	@at-root [data-theme-version="dark"] & {
+        background:$d-bg;
+		border-color:$d-border;
+    }
+}
+.select2-container .select2-selection--multiple .select2-selection__rendered{
+	padding: 2px 12px;
+}
+.swal2-popup .swal2-content{
+	color:$body-color;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

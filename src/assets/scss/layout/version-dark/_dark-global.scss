@@ -1,0 +1,1477 @@
+[data-theme-version="dark"]{
+	.card {
+        background-color: $dark-card;
+		box-shadow:none;
+    }
+	.dropdown-menu {
+        background-color: $dark-card;
+		box-shadow: 0rem 0rem 0rem 0.0625rem rgba(255, 255, 255,0.1);
+		.dropdown-item {
+			color:#777777;
+			&.selected,
+			&.selected.active,
+			&.active,
+			&:hover, 
+			&:focus {
+				background-color: $dark-card;
+				color: $white;
+			}
+		}
+    }
+	a{
+		color:$white;
+	}
+	.btn-link g [fill]{
+		fill: #fff;
+	}
+	.btn-light:active, 
+	.btn-light:focus, 
+	.btn-light:hover{
+		color:#000;
+	}
+	.form-control {
+        background-color:$d-bg;
+        border-color: $d-border;
+        color:$white;
+		
+    }
+	
+	.modal-content{
+		background:$dark-card;
+	}
+	.modal-footer,
+	.modal-header{
+		border-color: $d-border;
+	}
+	.close{
+	    font-weight: 400;
+		color: $white;
+		text-shadow: none;
+		
+		&:hover{
+			color: $white;
+		}
+	}
+	.star-rating .product-review,
+	.new-arrival-content .item{
+		color: $white;
+	}
+	
+	.custom-dropdown .dropdown-menu{
+		border-color: $d-border;
+	}
+	.widget-stat .media > span{
+	    background: $d-border;
+	    border-color: $d-border;
+		color:$white;
+	}
+	.plus-minus-input .custom-btn{
+		background: $d-bg;
+	    border-color: $d-border;
+	}
+	.dropdown-divider,
+	.size-filter ul li{
+		border-color: $d-border;
+	}
+	.custom-select{
+	    border-color: $d-border;
+		color: $d-ctl;
+		background:$d-bg;
+	}
+	.nav-tabs{
+		border-color: $d-border!important;
+	}
+	.mail-list .list-group-item.active i {
+		color: $white;
+	}
+	hr{
+		border-color: $d-border;
+	}
+	.grid-col{
+		background:$d-bg;
+	}
+	
+	.noUi-target{
+		border-color:$d-border;
+		border-radius: 0.5rem;
+		box-shadow: none;
+		
+		.noUi-connects{
+			background:$d-border;
+		}
+	}
+	.noUi-marker-large,
+	.noUi-marker{
+		background:$d-border;
+	}
+	.input-group-text{
+		background:$dark-card;
+		color:$white;
+		border-color:$d-border;
+	}
+	.note-editor.note-frame{
+		border-color:$d-border;
+		.btn{
+			color:$white;
+		}
+		.note-editing-area .note-editable{
+			color:$white;
+		}
+	}
+	.widget-media .timeline .timeline-panel{
+		border-color:$d-border; 
+	}
+	.notification_dropdown .dropdown-menu-right .all-notification{
+		border-color:$d-border; 
+	}
+	#user-activity .nav-tabs .nav-link{
+		border-color:$d-border; 
+        &.active{
+            background:$d-bg;
+            color:$white;
+        }
+	}
+	.list-group-item-action{
+		color:$body-color;
+	}
+	.list-group-item-action:focus, 
+	.list-group-item-action:hover, 
+	.list-group-item-action:focus{
+		background-color:$d-bg; 
+		border-color:$d-bg; 
+	}
+	.list-group-item.active{
+		color:$white;
+		border-color:var(--primary);
+		&:focus, 
+		&:hover, 
+		&:focus{
+			background-color:var(--primary); 
+			border-color:var(--primary); 
+			color:$white;
+		}
+	}
+	.swal2-popup{
+		background:$dark-card;
+	}	
+	.form-head .btn-outline-primary{
+		border-color:$d-border;
+	}
+	.form-head .btn-outline-primary:hover{
+		border-color:var(--primary);
+	}
+	.review-tab.nav-pills li a.nav-link.active{
+		background:transparent;
+	}
+	.new-arrival-content {
+		 h4 {
+			a{
+				color:$white;
+			}
+		 }
+	}
+	.text-black{
+		color:$white!important;
+	}
+	.abilities-chart .ct-chart .ct-label{
+		fill:$white;
+	}
+	.morris_chart_height text tspan{
+		fill:$white;
+	}
+	.btn-link{
+		color:$white;
+		svg{
+			path{
+				stroke:$white;	
+			}	
+		}
+	}
+	.order-bg{
+		background:$d-bg;
+	}
+	.detault-daterange{
+			background:$d-bg;
+			color:$white;
+		.input-group-text{
+			background:$dark-card;
+			border:0;
+
+		}	
+	}
+	
+	.dataTablesCard{
+		background-color:$dark-card;
+	}
+	.compose-content .dropzone{
+		background:$d-bg!important;
+		.dlab-message .dlab-button{
+			color:$white;
+		}
+	}
+	.daterangepicker{
+		background:$d-bg;
+		border-color:var(--primary);
+		.calendar-table{
+			border-color:var(--primary);
+			background:$d-bg;
+			.table-condensed{
+				td{
+					&:hover{
+						background-color:var(--primary);
+						color:$white;
+					}
+				}
+			}
+		}
+        &:after{
+            border-bottom: 0.375rem solid $d-bg;
+        }
+	}
+    
+    .daterangepicker select.hourselect
+    , .daterangepicker select.minuteselect
+    , .daterangepicker select.secondselect
+    , .daterangepicker select.ampmselect{
+            background: $d-bg;
+            border: 0.0625rem solid $d-border;
+            color:$white;
+    }
+    
+	.daterangepicker td.off, 
+	.daterangepicker td.off.in-range,
+	.daterangepicker td.off.start-date, 
+	.daterangepicker td.off.end-date{
+		background-color:$dark-card;
+		&:hover{
+			background-color:var(--primary);
+			color:$white;			
+		}
+	}
+
+// ---toggle-btn
+.round .checkmark {
+	background-color: $d-bg;
+}
+.round:hover input ~ .checkmark {
+	background-color: $d-bg;
+}
+.round span {
+    color: $white;
+}
+	.app-fullcalendar{
+		.fc-button{
+			background-color:$d-bg;
+			border-color:var(--primary);
+			color:$white;
+			text-shadow:none;
+			&:hover,&.fc-stat-hover{
+				background-color:var(--primary);
+			}
+		}
+	}
+	.swal2-popup .swal2-styled:focus {
+		outline: 0;
+		box-shadow: 0 0 0 0.125rem $d-border, 0 0 0 0.25rem var(--rgba-primary-1);
+	}
+	.dd-handle{
+		border-color:$d-border;
+	}
+	.menu-toggle .dlabnav .metismenu li > ul{
+		background:$dark-card!important;
+	}
+	.header-right .notification_dropdown .nav-link{
+		border-color:$d-border;
+	}
+	.nav-tabs .nav-link{
+		&:hover,&.active{
+			border-color:transparent;
+			background: transparent;
+			color: white!important;
+		}
+	}
+	.clockpicker-popover .popover-content{
+		background-color:$dark-card;
+	}
+	.clockpicker-plate{
+		background-color:$d-bg;
+	}
+	.clockpicker-popover .popover-title{
+		background-color:$d-bg;
+		color:$white;
+	}
+	.form-wizard .nav-wizard li .nav-link span{
+		background-color:$d-bg;
+	}
+	.form-wizard .nav-wizard li .nav-link:after{
+		background:$d-bg;
+	}
+	.form-wizard .nav-wizard li .nav-link.active:after,.form-wizard .nav-wizard li .nav-link.done:after{
+		background:var(--primary);
+	}
+	.form-wizard .nav-wizard li .nav-link.active span
+	,.form-wizard .nav-wizard li .nav-link.done span{
+		background:var(--primary);
+	}
+	.check-switch .custom-control-label:after
+    , .check-switch .custom-control-label:before{
+        border-color:var(--primary);
+    }
+    .fc-unthemed .fc-today{
+        background:$d-bg;
+    }
+    .fc-unthemed .fc-divider, .fc-unthemed .fc-list-heading td, .fc-unthemed .fc-popover .fc-header{
+        background: $d-border;
+    }
+    .picker__box{
+        background:$d-bg;
+        .picker__button--clear
+        , .picker__button--close
+        , .picker__button--today{
+            background:$dark-card;
+            color:$white;
+            &:hover{
+                &:before{
+                    color:$white;
+                }
+            }
+        }
+    }
+    .picker{
+        color:#999;
+    }
+    .dtp > .dtp-content{
+        background:$d-bg;
+    }
+    .dtp table.dtp-picker-days tr > td > a{
+       color: #68686a; 
+       &.selected{
+           color:$white;
+       }
+    }
+	.order-request tbody tr{
+		border-color:$d-border;
+	}
+	.card-list li{
+		color:$white;
+	}
+	.card-bx .change-btn:hover{
+		color:var(--primary);
+	}
+	.invoice-card{
+		&.bg-warning{
+			background-color:#5b3c1f!important;
+		}
+		&.bg-success{
+			background-color:#2a6729!important;
+		}
+		&.bg-info{
+			background-color:#4c276a!important;
+		}
+		&.bg-secondary{
+			background-color:#1c3e52!important;
+		}
+	}
+	.user-list li{
+		border-color:$dark-card;
+	}
+	.toggle-switch{
+		color:$white;
+	}
+	.bar-chart{
+		.apexcharts-text tspan{
+			fill:#969ba0;
+		}
+		line{
+			stroke:$d-border;
+		}
+	}
+	.accordion.style-1 .accordion-item,.invoice-list,
+	.form-check-input[type="checkbox"]{
+		border-color:$d-border;
+	}
+	.accordion.style-1 .accordion-header.collapsed {
+		.user-info a,.user-info,&>span{
+			color:$white;
+		}
+	}
+	.ic-card {
+		&>a{
+			background:#25479f;
+			&:first-child{
+				border-color:#25479f;
+			}
+		}
+		span{
+			color:$white;
+		}
+	}
+	table.dataTable thead th, table.dataTable thead td{
+		border-color:$dark-card!important;
+	}
+	.form-check .form-check-input{
+		//background:$white;
+		&:checked{
+			background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+		}
+	}
+	.paging_simple_numbers.dataTables_paginate{
+		//background:$d-border;
+	}
+	.dataTables_info{
+		color:$white;	
+	}
+	.dataTables_wrapper .dataTables_paginate span .paginate_button.current,
+	.dataTables_wrapper .dataTables_paginate span .paginate_button:hover{
+		background:var(--primary);
+		color:$white!important;
+	}
+	.dashboard-select{
+		background:$dark-card;
+		color: white!important;
+		border-color:$d-border!important;
+	}
+	.dashboard-select .list{
+		background:$dark-card;
+	}
+	.dashboard-select .option:hover, .dashboard-select .option.focus, .dashboard-select .option.selected.focus{
+		background:$d-bg;
+	}
+	.card-tabs.style-1 .nav-tabs{
+		background:$dark-card;
+	}
+	.transaction-details{
+		border-color:$d-border;
+	}
+	.description{
+		color:$white;
+	}
+	.apexcharts-legend-text{
+		color:$white!important;	
+	}
+	.area-theme{
+		line{
+			stroke:$d-border;
+		}	
+	}
+	.transaction-details .amount-bx{
+		background:$dark-card;
+		i{
+			background:#8d3b0c;			
+		}
+	}
+	.nice-select .option{
+		background:$dark-card;
+	}
+	.nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus{
+		background:$dark-card;
+	}
+	.card-tabs.style-1{
+		border-color:$d-border;
+	}
+	
+	.nice-select .list{
+		background:$d-bg;
+	}
+	.table-search .input-group .input-group-text{
+		background:$dark-card;
+	}
+	.dark-btn{
+		svg{
+			path{
+				stroke: #fff;
+			}
+				
+		}	
+	}
+	.bar-chart{
+		.apexcharts-legend-text{
+			color:$white!important;	
+		}	
+	}
+	.Sales{
+		tspan{
+			fill:$white;	
+		}	
+	}
+	.timeline-chart{
+		rect{
+			fill:$d-bg;	
+		}	
+	}
+	.header-info{
+		span{
+			color:$white!important;	
+		}	
+	}
+	.ck-editor__editable{
+		background:$d-bg!important;
+	}
+	.ck.ck-editor .ck.ck-toolbar{
+		background:$dark-card;	
+	}
+	.ck.ck-toolbar .ck.ck-toolbar__separator{
+		background:$d-border;
+	}
+	.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+		border-color:$d-border;
+	}
+	
+	
+	.search-area{
+		.form-control{
+			background:$d-bg;	
+			border:none;
+			&:hover{
+				border-color:$d-border;	
+			}
+		}	
+		.input-group-text{
+			background:$d-bg;	
+			border:none;
+		}
+	}
+	.chartBarRunning{
+		tspan{
+			fill:$white;	
+		}	
+		line{
+			stroke:$d-border;	
+		}
+	}
+	.reservationChart{
+		tspan{
+			fill:$white;	
+		}	
+		line{
+			stroke:$d-border;	
+		}	
+	}
+	.table-condensed{
+		i{
+			&:hover{
+				background:$dark-card;	
+			}	
+		}		
+	}
+	.booking-calender thead .picker-switch{
+		color:$white;
+		&:hover{
+			background:$dark-card;
+			
+		}	
+	}
+	.booking-calender{
+		.prev,
+		.next{
+			&:hover{
+				background:$dark-card;	
+			}	
+		}
+	}
+	.dlabnav .header-info2 span{
+		color:$white;	
+	}
+	.booking-calender tbody tr .day{
+		border-color:$d-border;	
+	}
+	.booking-calender thead .dow{
+		border-color:$d-border;		
+	}
+	.customer-search{
+		.search-area{
+			.form-control{
+				background:$dark-card;	
+			}
+			.input-group-text{
+				background:$dark-card;		
+			}
+		}	
+	}
+	.paging_simple_numbers.dataTables_paginate{
+		border-color:$d-border;			
+	}
+	.primary-icon{
+		path{
+			stroke:$white;	
+		}	
+	}
+	.pagin{
+		border-color:$d-border;	
+	}
+	.nav-header .brand-title .brand-sub-title{
+		color:$white;	
+	}
+	.dashboard-calendar .fc-daygrid-day-frame.fc-scrollgrid-sync-inner{
+		background:$dark-card;
+		border-color:$d-border;
+		
+	}
+	.dashboard-calendar{
+		.fc-non-business{
+			background:$dark-card;
+			border-color:$d-border;	
+		}
+		.fc-daygrid-day-number{
+			color:$white;		
+		}
+	}
+	.event-calend .fc .fc-button-group > .fc-button{
+		border-color:$d-border;	
+	}
+	.dashboard-calendar .fc-theme-standard td, .dashboard-calendar .fc-theme-standard th{
+		border-color:$d-border;		
+	}
+	.dashboard-calendar .fc .fc-daygrid-more-link{
+		color:$white;	
+	}
+	.fc-theme-standard td, .fc-theme-standard th{
+		border-color:$d-border;	
+	}
+	.fc-theme-standard .fc-scrollgrid.fc-scrollgrid-liquid, .fc-scrollgrid, table{
+		border-color:$d-border;		
+	}
+	.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start{
+		background:var(--primary);	
+	}
+	.dlab-demo-panel .dlab-demo-inner{
+		background:$d-bg;	
+	}
+	.food-list-row{
+		border-color:$d-border;	
+	}
+	.popover-body{
+		color:$white;	
+	}
+	.swal2-popup .swal2-content{
+		color:$white;		
+	}
+	.modal-header .close{
+		background:none;
+	}
+	.timeline-panel{
+		.media-body{
+			small{
+				color:$white;
+			}
+		}
+	}
+	.chatbox .card-header p{
+		color:$white;
+	}
+	.date-ds-btn{
+		background:$dark-card;
+		color: white;
+	}
+	.food-list-row .media-bx h5 a, .food-list-row .media-bx .h5 a{
+		color:$white;
+	}
+	.staff-bx .card-footer{
+		background:#3f4056;
+	}
+	.page-titles .breadcrumb .breadcrumb-item + .breadcrumb-item:before{
+		color:$white;
+	}
+	.table-striped > tbody > tr:nth-of-type(odd) > *{
+		color: #706f6f;
+	}
+	.accordion .accordion-item{
+		background: transparent;
+	}
+	.list-group-item{
+		color:$white;
+	}
+	.form-control-plaintext{
+		color:$white;
+	}
+	label{
+		color:$white;
+	}
+	//jiade
+	
+	
+	.form-control.custom-image-select-2 .filter-option-inner-inner{
+		color:$white;
+	}
+	.table tbody tr td{
+		color:$d-ctl;
+	}
+	.wallet-bar .order-history{
+		.price-list{
+			.chart-title{
+				.text-secondary{
+					color:var(--secondary)!important;
+				}
+			}
+		}
+	}
+	.apexcharts-text tspan{
+		fill:rgba(255,255,255,.6);
+	}
+	.apexcharts-xaxis{
+		line{
+			stroke:$d-border;
+		}
+	}
+	.price-list .card-footer{
+		.text-secondary{
+			color:var(--primary)!important;
+		}
+	}
+	.chart-title{
+		.text-pink{
+			color:$pink!important;
+		}
+	}
+	.form-control.custom-image-select-2.style-1 .dropdown-toggle {
+		background: rgba(172, 76, 188, 0.1)!important;
+	}
+	.form-control.custom-image-select-2 .dropdown-toggle{
+		background:var(--rgba-primary-2)!important;
+	}
+	.transaction-table .card-body .table-responsive thead th{
+		background:$d-bg;
+		color:$white;
+	}	
+	.market-chart{
+		.text-secondary{
+			color:var(--secondary)!important;
+			svg{
+				path{
+					fill:var(--secondary);
+				}
+			}
+		}
+	}
+	.chart-title p{
+		color:$d-ctl;
+	}
+	.market-coin .coin-search-area .form-control{
+		border-color:$dark-card;
+		background:$dark-card;
+	}
+	.market-coin .coin-search-area .input-group-text{
+		border-color:$dark-card;
+		background:$dark-card;
+		svg{
+			path{
+				fill:$white;
+			}
+		}
+	}
+	.market-coin .coin-box{
+		border-color:$d-border;
+	}
+	.market-overview .get-report{
+		color:var(--primary)!important;
+	}
+
+	.coin-content .guest-calendar{
+		border-color:$d-border;
+		span{
+			svg{
+				path{
+					fill:$white;
+				}
+			}
+		}
+		.reportrange{
+			span{
+				color:$d-ctl;
+			}
+		}
+	}
+	.coin-content .default-select{
+		border-color:$d-border;
+		color:$d-ctl;
+	}
+	.digital-cash .media .media-content p{
+		border-color:$d-border;
+		color:$d-ctl;
+	}
+	.digital-cash .card-footer .btn{
+		color:var(--primary)!important;
+	}
+	.form-control.custom-image-select-1 .dropdown-toggle{
+		background:$d-bg!important;
+		color:$white!important;
+		border-color:$d-border!important;
+	}
+	.form-control.custom-image-select-1 .filter-option-inner-inner{
+		color:$white;
+	}
+	.coin-warpper .search-area .form-control{
+		color:$d-ctl;
+	}
+	.coin-warpper .search-area .input-group-text{
+		svg{
+			path{
+				fill:$white;
+			}
+		}
+	}
+	.form-wrapper.trade-form .input-group .input-group-text{
+		background:$d-bg;
+		color:$d-ctl;
+	}
+	.market-overview .get-report,
+	.market-preview,
+	.market-overview .card-header h4, .market-overview .card-header .h4,
+	.form-wrapper.trade-form .input-group .form-control:focus,
+	.coin-warpper .nav .nav-item{
+		border-color:$d-border;
+	}
+	.coin-warpper{
+		background:$dark-card;
+		border-color:$d-border;
+	}
+	.coin-warpper .nav .nav-item .nav-link svg{
+		path{
+			fill:$white;
+		}
+	}
+	.daterangepicker .calendar-table .next span, .daterangepicker .calendar-table .prev span{
+		border-color:$white;
+	}
+	.tbl-orders-style{
+		.tp-btn{
+			svg{
+				path{
+					stroke:$white;
+				}
+			}
+		}
+	}
+	.customer-search{
+		.search-area{
+			.input-group-text{
+				svg{
+					path{
+						fill:$white;
+					}
+				}
+			}
+		}
+	}
+	.student-tbl tbody tr td{
+		span{
+			.text-secondary{
+				color:$white!important;
+			}
+		}
+	}
+	.market-preview:hover{
+		background:$d-bg;
+	}
+	.bg-ripple-hover{
+		thead{
+			tr{
+				th{
+					color:#677686;
+				}
+			}
+		}
+	}
+	.dataTables_wrapper .dataTables_paginate span .paginate_button{
+		color:$d-ctl!important;
+	}
+	.portofolio .my-profile .media .media-img a,
+	.portofolio .my-profile .portofolio-social li a{
+		border-color:$d-border;
+	}
+	.coin-holding{
+		border-color:$d-border;
+	}
+	.tp-btn{
+		svg{
+			path{
+				stroke:$white;
+			}
+		}
+	}
+	.copyright strong{
+		color:#9fa4a6;
+	}
+	.support-box .info a{
+		color:$black!important;
+	}
+	.btn-icon-end{
+		border-color:$d-border;
+	}
+	.donut-chart-sale small, .donut-chart-sale .small, .donut-chart-sale .small{
+		color:$white;
+	}
+	.border-end{
+		border-color:$d-border!important;
+	}
+	.ck.ck-editor__main > .ck-editor__editable{
+		background:$d-bg!important;
+	}
+	.change-btn{
+		a{
+			&:hover{
+				color:$black;
+			}
+		}
+	}
+	.dlabnav .main-menu{
+		color:$white;
+	}
+	.nav-pills .nav-link.active, .nav-pills:hover .show > .nav-link{
+		background:var(--rgba-secondary-1);
+		color:var(--secondary);
+	}
+	.toggle-switch .form-check-input:checked:after{
+		background: var(--secondary);
+	}
+	.nav-pills .nav-link:hover{
+		color:var(--secondary);
+	}
+	.table.bg-primary-hover th{
+		color:var(--secondary);
+	}
+	.table.bg-primary-hover tr:hover td, .table.bg-primary-hover tr:hover th{
+		background: var(--secondary);
+	}
+	.get-report{
+		color:var(--secondary);
+	}
+	.btn-close{
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352 512'%3E%3C!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --%3E%3Cpath d='M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z' fill='%23fff'/%3E%3C/svg%3E");
+	}
+	.coin-holding .coin-box-warper a{
+		background:$d-bg;
+	}
+	//finlab
+
+	.card .card-box-icon{
+		border-color:$d-border;
+	}
+	.toggle-btn .check{
+		background-color: $d-bg;
+	}
+	.toggle-btn .check:after{
+		background:	$white;
+	}
+	.toggle-btn input:checked ~ .check:after {
+		display: block;
+	}
+	.toggle-btn input:checked ~ .check {
+		background-color: $d-bg;
+	}
+	.toggle-btn.expense .check:after {
+		background-color: #FFFA6F;
+	}
+	
+	.bootstrap-select .btn{
+		color:$white;
+	}
+	#wallet-bar{
+		background-color:$dark-card;
+		border-color:$d-border;
+	}
+	.page-titles{
+		background:$dark-card;
+	}
+	.tags .tag{
+		color:$white;
+		background:rgba(255,255,255,0.1);
+	}
+	.server-content .progress{
+		background-color:transparent;
+	}
+	.student .indox a::before{
+		border-color:$d-border;
+	}
+	#redial{
+		circle{
+			fill: white;
+		}
+	}
+	.dashboard-select{
+		.bootstrap-select .btn{
+			background:#383844;
+		}
+	}
+	#activity{
+		line{
+			stroke:$d-border;
+		}
+	}
+	.quick-info{
+		background-color:$d-bg;
+		border: 1px solid $d-border;
+	}
+	.pagination.no-bg li:not(.page-indicator):not(.active) .page-link{
+		background: $d-bg;
+		border-color: transparent;
+	}
+	.lastest_trans .trans-table .doller,
+	.table-pagenation p span,
+	.email-list .message .hader,
+	.email-list .message .col-mail-2 .date,
+	.dz-card .card-footer{
+		color: rgba(255, 255, 255, 0.6);
+	}
+	.email-list .message:hover{
+		background:$dark-card;
+	}
+	.print{
+		svg{
+			path{
+				fill:rgba(255, 255, 255, 0.6);
+			}
+		}
+	}
+	.right-box-padding{
+		&.border-start{
+			border-color:$d-border!important;
+		}
+	}
+	.demo-right-inner{
+		background-color:$dark-card;
+	}
+	.dzm-tabs{
+		background-color:$d-bg;
+	}
+	.notification{
+		p{
+			color:$black;
+		}
+	}
+	.Modal-box{
+		background-color:$dark-card;
+	}
+	.Modal-box .box3{
+		background-color:$d-bg;
+	}
+	.lastest_trans .trans-table .print,
+	.lastest_trans .trans-table .btn.tp-btn.btn-primary{
+		background-color:$d-bg;
+	}
+	.lastest_trans .trans-table .btn.tp-btn.btn-primary{
+		background-color:$d-bg;
+		svg{
+			circle{
+				fill:$white;
+			}
+		}
+	}
+	.lastest_trans .trans-table:hover{
+		background-color:$d-bg;
+	}
+	.previews-info:hover{
+		background-color:$d-bg;
+	}
+	#activity1{
+		line{
+			stroke:$d-border;
+		}
+	}
+	.dataTables_wrapper .dataTables_paginate .paginate_button.previous.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.next.disabled{
+		color:$white!important;
+	}
+	.plus-bx a{
+		background:$dark-card;
+	}
+	.kanbanimg li span,
+	.kanbanimg img{
+		border-color:$d-border;
+	}
+	.drive,
+	.file-header,
+	.folder-structure li,
+	.file-drive,
+	.input-group.search-area,
+	.user-photo img,
+	.messages .student,
+	.fc .fc-button-group > .fc-button,
+	.fc-daygrid-dot-event,
+	.box-2 .flow,
+	.type-massage,
+	.chat-box-area .media .message-received .dz-media,
+	.chat-left-area .chat-sidebar,
+	.email-right-box .table-pagenation,
+	.email-list .message{
+		border-color:$d-border!important;
+	}
+	.timeline-active li:before{
+		background:$d-border;
+	}
+	.selling .form_exchange .input_exchange .input-select{
+		background-color:$dark-card;
+		border-color:$d-border;
+		color:$white;
+	}
+	.hamburger{
+		svg{
+			rect{
+				fill:$white;
+			}
+		}
+	}
+	.dlabnav .metismenu > li.mm-active > a{
+		color:$white!important;
+	}
+	.file_area .table-pagenation{
+		background-color:$d-bg;
+	}
+	.email-list{
+		background:$d-bg;
+	}
+	.email-list .message .col-mail-2 .subject{
+		color:$white;
+	}
+	.email-right-box .table-pagenation,
+	.email-right-box .pagination{
+		background-color:$dark-card;
+	}
+	.email-left-box .mail-list a{
+		color: rgba(255, 255, 255, 0.6);
+	}
+	.messages .input-group.search-area input.form-control,
+	.messages .input-group.search-area .input-group-text{
+		background-color:$d-bg;
+	}
+	.dz-info{
+		svg{
+			path{
+				fill:$white;
+			}
+		}
+	}
+	.message-box,
+	.type-massage,
+	.chat-box-area .media{
+		background:$dark-card;
+		color: white;
+	}
+	.chat-tabs .chat-bx:after,
+	.message-box .input-group.search-area input.form-control,
+	.message-box .input-group.search-area .input-group-text{
+		background:$d-bg;
+	}
+	.search-coundry{
+		background-color:$dark-card;
+		border-color:$d-border;
+		.bootstrap-select .btn{
+			background:$dark-card!important;
+			color:$white;
+			
+		}
+	}
+	.header.is-fixed{
+		background:var(--headerbg);
+	}
+	.datepicker.datepicker-dropdown th.datepicker-switch{
+		color:rgba(255,255,255,0.6);
+		&:hover{
+			color:$black;
+		}
+	}
+	.datepicker.datepicker-dropdown{
+		border-color:$d-border;
+	}
+	.datepicker.datepicker-dropdown .datepicker-days .table-condensed td.day{
+		color: rgba(255,255,255,0.6);
+	}
+	.notification_dropdown .dropdown-menu-end .all-notification{
+		border-color:$d-border;
+	}
+	.header-profile2 .dropdown-menu a span{
+		color:rgba(255,255,255,0.6);
+	}
+	.profile-card .card-header,
+	.profile-card{
+		border-color:$d-border;
+	}
+	.profile-form .form-label{
+		color:rgba(255,255,255,0.6);
+	}
+	.author-profile .info-list li,
+	.profile-card .card-footer,
+	.author-profile .upload-link{
+		border-color:$d-border;
+	}
+	.author-profile .info-list li a,
+	.author-profile .author-info span,
+	.author-profile .info-list li span{
+		color:rgba(255,255,255,0.6);
+	}
+	.author-profile .card-footer .form-control{
+		border-color:$d-border;
+		background:$d-bg!important;
+		
+	}
+	.header-profile2{
+		.dropdown-menu{
+			.ai-icon{
+				&:hover{
+					background:$d-bg;
+				}
+			}
+		}
+	}
+	.wallet-bar .closed-icon{
+		color:$white;
+	}
+	.select2-container--default .select2-selection--multiple .select2-selection__choice,
+	.select2-container--classic .select2-selection--multiple .select2-selection__choice{
+		background-color:$dark-card;
+		border-color:$dark-card;
+		
+	}
+	mark, .mark,
+	.select2-container--classic .select2-search--inline .select2-search__field{
+		background-color:$d-bg;
+		color:$white;
+	}
+	.select2-container--default .select2-search--inline .select2-search__field{
+		color:rgba(255,255,255,0.6);
+	}
+	.select2-container--default .select2-results__option[aria-selected=true]{
+		background-color:$d-bg;
+	}
+	.trans-info .icon{
+		border-color:$d-border;
+	}
+	.legendLabel{
+		color:rgba(255,255,255,0.6);
+	}
+	.statistic-content{
+		border-color:$d-border;
+	}
+	p{
+		color:$dbody-text;
+	}
+	.header-profile2 span{
+		color:$dbody-text;
+	}
+	.page-titles{
+		.datepicker.datepicker-dropdown th.prev:hover{
+			color:$white!important;
+		}
+	}
+	.compose-content .dropzone{
+		border-color:$d-border;
+	}
+	#alert-link{
+		a{
+			color:#768783;
+		}
+	}
+	#message-alert{
+		p{
+			color: #666666;
+		}
+	}
+	#AlertLeftIcon{
+		h5{
+			color:#2A353A!important;
+		}
+		p{
+			color: #666666;
+		}
+	}
+	.header{
+		&.is-fixed{
+			border-color:$d-border!important;
+		}
+	}
+	.sidebar-right-inner{
+		.bootstrap-select .btn{
+			background:transparent!important;
+			color: #2A353A;
+			border-color:$border-color!important;
+		}
+		.dropdown-menu{
+			background-color: #fff;
+			.dropdown-item {
+			color:#777777;
+				&.selected,
+				&.selected.active,
+				&.active,
+				&:hover, 
+				&:focus {
+					background-color:var(--rgba-primary-1);
+					color: #2A353A;
+				}
+			}	
+		}
+	}
+	.type_msg{
+		.form-control{
+			background-color:$dark-card;
+			box-shadow:none;
+		}
+	}
+	.email-left-box{
+		border-color:$d-border;
+	}
+	.alert .btn-close{
+		background-image: none!important;
+	}
+	#main-wrapper{
+		background-color:$d-bg;
+	}
+	.prot-blog .fill a{
+		&:hover{
+			color:black;
+		}
+	}
+	.table-striped > tbody > tr:nth-of-type(odd) > *{
+		background: #1e1e25;
+		color: white!important;
+	}
+	
+	.dlabnav{
+		border-color:$d-border;
+	}
+	.kanban-user .users li span,
+	.kanban-user .users li img{
+		border-color:$d-border;
+	}
+	.plus-bx{
+		a{
+			svg{
+				path{
+					fill:$white;
+				}
+			}
+		}
+	}
+	.page-title{
+
+		background-color: $dark-card;
+	}
+	.chat-mid-area{
+		&.bg-white{
+			background-color: $dark-card!important;
+
+		}
+
+	} 
+	.message-box{
+		border-color:$d-border;
+		
+	}
+	.message-received{
+		p{
+
+			background-color: $d-bg!important;
+			color:$white!important;
+		}
+	}
+	.input-group.user-search-area .input-group-text{
+		background-color: $d-bg;
+		border-color:$d-border;
+	}
+	.input-group.user-search-area .form-control{
+
+		border-color:$d-border;
+	}
+	.datepicker-days .table-condensed td.day{
+		color:$white;
+	}
+	.datepicker-days .table-condensed thead th.picker-switch{
+		color:$white;
+	}
+	.datepicker-days .table-condensed thead th.prev, .datepicker-days .table-condensed thead th.picker-switch, .datepicker-days .table-condensed thead th.next{
+
+		color:$white;
+	}
+	@keyframes blinking {
+        0% {
+          background-color:var(--primary);
+
+        }
+        100% {
+          background-color:transparent;
+
+        }
+    }
+	input-group.search-area{
+		border-color:$d-border!important;
+
+	}
+	.doller{
+
+		color:$white;
+	}
+	.apexcharts-tooltip.apexcharts-theme-light{
+		background-color:rgba(255, 255, 255, 0.96);
+		color:#000;
+
+	}
+	.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred{
+		border-color:$d-border;
+	}
+	.all{
+		.show{
+				
+			.card-header{
+
+				background-color: $d-border!important;
+				border-radius: $radius!important;
+
+			}
+			.nav-link{
+				width:2.5rem;
+				min-width:2.5rem;
+				height:2.5rem;
+				margin: 5px;
+				background-color: $dark-card!important;
+			}
+		}
+	}
+	.note-text{
+		color:#000;
+
+	}
+	.timeline-active.style-1 .timeline-list:before{
+		border-color:$d-border;
+	}
+	.authincation{
+		background-color:$d-bg;
+		
+	}
+	.authincation-content.style-2 .form-control{
+		border-color:$d-border;
+	}
+	.label-color,
+	.bootstrap-datetimepicker-widget .datepicker .datepicker-days .table-condensed td.day,
+	.bootstrap-datetimepicker-widget .datepicker .datepicker-days .table-condensed thead th.prev, .bootstrap-datetimepicker-widget .datepicker .datepicker-days .table-condensed thead th.picker-switch, .bootstrap-datetimepicker-widget .datepicker .datepicker-days .table-condensed thead th.next{
+		color:$white;
+	}
+	.authincation{
+		background-image: url("../images/student-bg-Recovered.jpg")!important;
+	}
+	.table-responsive .table-striped th{
+		background-color:var(--rgba-primary-1);
+		color:$white;
+	}
+	.dz-card .card-body.code-area,
+	.demo-view .code-area{
+	
+		background-color:$dark-card;
+		border-color:$d-border;
+	}
+
+	.dz-calender{
+		.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name{
+			color: $white;
+		}
+		.react-datepicker__current-month {
+			color: $white;
+		}
+		.react-datepicker__navigation{
+			background: none;
+		}
+		.react-datepicker__navigation-icon:before {
+			border-color: $white;
+		}
+	}
+	#overiewChart line {
+		stroke: #444;
+	}
+}

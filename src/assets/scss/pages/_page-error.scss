@@ -1,0 +1,65 @@
+.error-page{
+	@include respond ('tab-port'){
+		text-align:center;
+		
+	}
+	.error-text {
+		font-size: 150px;
+		line-height: 1;
+		font-weight: 700;
+		margin-bottom: 0;
+
+		@include respond('tab-port'){
+			font-size:130px;
+		}
+		
+		@include respond('phone') {
+			font-size: 80px;
+		}
+	}
+	h4{
+		font-size: 44px;
+		margin-bottom: 0;
+		line-height: 1.2;
+		
+		@include respond('tab-port'){
+			font-size:37px;
+		}
+		@include respond('phone-land'){
+			font-size:27px;
+		}
+		
+		@include respond('phone') {
+			font-size: 20px;
+		}
+	}
+	p{
+		font-size: 18px;
+		color: #c2c2c2;
+		margin-bottom: 30px;
+		@include respond('phone-land'){
+			font-size:1rem;
+		}
+
+		
+		@include respond('phone') {
+			font-size: 14px;
+		}
+	}
+	
+}
+.move-1 {
+  -webkit-animation: move1 5s infinite;
+  animation: move1 5s infinite; }	
+  
+  
+@-webkit-keyframes move1 {
+  0% {
+    -webkit-transform: rotate(-1deg) translate(-2px, -2px);
+    transform: rotate(-1deg) translate(-2px, -2px); }
+  50% {
+    -webkit-transform: rotate(1deg) translate(2px, 2px);
+    transform: rotate(1deg) translate(2px, 2px); }
+  100% {
+    -webkit-transform: rotate(-1deg) translate(-2px, -2px);
+    transform: rotate(-1deg) translate(-2px, -2px); } }
