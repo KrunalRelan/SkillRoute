@@ -10,7 +10,7 @@ import { InvoiceItem } from "../../models/InvoiceItem";
 const AddNewInvoice: React.FC = () => {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
   const [formData, setFormData] = useState<Invoice>({
-    // This value can be ignored on creation; server will generate it.
+    // Invoice number will be generated on the server.
     invoiceDate: "",
     billedBy: {
       companyName: "",
@@ -78,7 +78,7 @@ const AddNewInvoice: React.FC = () => {
 
       // Recalculate amount when quantity or rate changes
       item.amount = item.quantity * item.rate;
-      // If gstPercentage is available, calculate tax amount and line total
+      // If gstPercentage is provided, calculate tax amount and total
       if (item.gstPercentage) {
         item.taxAmount = parseFloat(
           ((item.amount * item.gstPercentage) / 100).toFixed(2)
@@ -120,7 +120,7 @@ const AddNewInvoice: React.FC = () => {
     }));
   };
 
-  // Calculate invoice-level totals and apply GST rules
+  // Calculate invoice-level totals and apply GST rules based on Billed To address.
   const calculateTotals = () => {
     const subTotal = formData.items.reduce((acc, item) => acc + item.amount, 0);
     let invoiceTax = 0;
@@ -128,7 +128,7 @@ const AddNewInvoice: React.FC = () => {
       sgst = 0,
       igst = 0;
 
-    // Determine GST rule based on billedTo address (if it includes "delhi" then intra‑state)
+    // Check if billedTo address includes "delhi" (case-insensitive)
     if (
       formData.billedTo.address &&
       formData.billedTo.address.toLowerCase().includes("delhi")
@@ -154,225 +154,250 @@ const AddNewInvoice: React.FC = () => {
 
   const handleSubmit = async () => {
     calculateTotals();
-    // The createInvoice method should generate the invoice number on the server.
+    // createInvoice should generate the invoice number on the backend.
     await createInvoice(formData);
     navigate("/invoices");
   };
 
   return (
     <div className="container">
-      <h3 className="mt-4 mb-3 text-center">Invoice</h3>
-      {/* Invoice Header */}
-      <div className="row mb-4">
-        {/* Removed invoice number input - it will be generated on the server */}
-        <div className="col-md-6">
-          <div className="form-group">
-            <label>Invoice Date</label>
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Invoice Date"
-              value={formData.invoiceDate}
-              onChange={(e) =>
-                setFormData({ ...formData, invoiceDate: e.target.value })
-              }
-            />
+      {/* Card Container */}
+      <div className="card w-100 border-0 rounded-0">
+        <div className="card-header bg-primary text-white">
+          <h4 className="card-title mb-0 text-white text-center">
+            Add New Invoice
+          </h4>
+        </div>
+        <div className="card-body">
+          {/* Invoice Header */}
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="text-primary">Invoice Date</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  placeholder="Invoice Date"
+                  value={formData.invoiceDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, invoiceDate: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Billed By / Billed To Sections */}
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed By</h5>
+              {Object.keys(formData.billedBy).map((field) => (
+                <div className="form-group" key={field}>
+                  <input
+                    className="form-control my-1"
+                    name={field}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    value={(formData.billedBy as any)[field]}
+                    onChange={(e) => handleBilledInfoChange(e, "billedBy")}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed To</h5>
+              {Object.keys(formData.billedTo).map((field) => (
+                <div className="form-group" key={field}>
+                  <input
+                    className="form-control my-1"
+                    name={field}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    value={(formData.billedTo as any)[field]}
+                    onChange={(e) => handleBilledInfoChange(e, "billedTo")}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Invoice Items Table */}
+          <h5 className="mt-4 text-primary">Invoice Items</h5>
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr className="text-center">
+                  <th>S.No</th>
+                  <th>Particulars</th>
+                  <th>GST (%)</th>
+                  <th>Quantity</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>Tax</th>
+                  <th>Total</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {formData.items.map((item, idx) => (
+                  <tr key={idx} className="text-center">
+                    <td>{idx + 1}</td>
+                    <td>
+                      <select
+                        className="form-control"
+                        value={item.description}
+                        onChange={(e) => {
+                          const selectedItem = invoiceItems.find(
+                            (i) => i?.description === e.target.value
+                          );
+                          handleItemChange(idx, "description", e.target.value);
+                          if (selectedItem) {
+                            handleItemChange(idx, "rate", selectedItem.rate);
+                            handleItemChange(
+                              idx,
+                              "gstPercentage",
+                              selectedItem.gstPercentage
+                            );
+                          } else {
+                            handleItemChange(idx, "rate", 0);
+                            handleItemChange(idx, "gstPercentage", 0);
+                          }
+                        }}
+                      >
+                        <option value="">Select Item</option>
+                        {invoiceItems.map((i) => (
+                          <option
+                            key={i.itemId}
+                            value={i.description ?? ""}
+                          >
+                            {i.description} (₹{i.rate})
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>{item.gstPercentage}%</td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleItemChange(
+                            idx,
+                            "quantity",
+                            Number(e.target.value)
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.rate}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.amount.toFixed(2)}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.taxAmount?.toFixed(2) || "0.00"}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.total?.toFixed(2) || "0.00"}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteItem(idx)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Invoice Summary */}
+          <div className="row mt-4">
+            <div className="col-md-4">
+              <h5 className="text-primary">
+                Sub Total: ₹{formData.subTotal.toFixed(2)}
+              </h5>
+            </div>
+            {formData.cgst > 0 || formData.sgst > 0 ? (
+              <>
+                <div className="col-md-4">
+                  <h5 className="text-primary">
+                    CGST (9%): ₹{formData.cgst.toFixed(2)}
+                  </h5>
+                </div>
+                <div className="col-md-4">
+                  <h5 className="text-primary">
+                    SGST (9%): ₹{formData.sgst.toFixed(2)}
+                  </h5>
+                </div>
+              </>
+            ) : (
+              <div className="col-md-4">
+                <h5 className="text-primary">
+                  IGST (18%): ₹{formData.igst.toFixed(2)}
+                </h5>
+              </div>
+            )}
+          </div>
+          <div className="row mb-4">
+            <div className="col-md-12 text-end">
+              <h5 className="text-primary">
+                Total Amount: ₹{formData.totalAmount.toFixed(2)}
+              </h5>
+            </div>
+          </div>
+
+          {/* Bank Details */}
+          <div className="row mb-4">
+            <div className="col-md-12">
+              <h5 className="text-primary">Bank Details</h5>
+              <p className="text-muted">
+                <strong>Account Name:</strong> Confab 360 degree
+                <br />
+                <strong>Account Number:</strong> 181805001263
+                <br />
+                <strong>IFSC:</strong> ICIC0001818
+                <br />
+                <strong>Account Type:</strong> Current
+                <br />
+                <strong>Bank:</strong> ICICI Bank Ltd
+              </p>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="d-flex justify-content-between">
+            <button className="btn btn-secondary" onClick={addItem}>
+              Add Item
+            </button>
+            <button className="btn btn-primary" onClick={handleSubmit}>
+              Submit Invoice
+            </button>
           </div>
         </div>
-      </div>
-
-      {/* Billed By / Billed To Sections */}
-      <div className="row mb-4">
-        <div className="col-md-6">
-          <h5>Billed By</h5>
-          {Object.keys(formData.billedBy).map((field) => (
-            <div className="form-group" key={field}>
-              <input
-                className="form-control my-1"
-                name={field}
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                value={(formData.billedBy as any)[field]}
-                onChange={(e) => handleBilledInfoChange(e, "billedBy")}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="col-md-6">
-          <h5>Billed To</h5>
-          {Object.keys(formData.billedTo).map((field) => (
-            <div className="form-group" key={field}>
-              <input
-                className="form-control my-1"
-                name={field}
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                value={(formData.billedTo as any)[field]}
-                onChange={(e) => handleBilledInfoChange(e, "billedTo")}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Invoice Items Table */}
-      <h5 className="mt-4">Invoice Items</h5>
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <thead>
-            <tr className="text-center">
-              <th>S.No</th>
-              <th>Particulars</th>
-              <th>GST (%)</th>
-              <th>Quantity</th>
-              <th>Rate</th>
-              <th>Amount</th>
-              <th>Tax</th>
-              <th>Total</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {formData.items.map((item, idx) => (
-              <tr key={idx} className="text-center">
-                <td>{idx + 1}</td>
-                <td>
-                  <select
-                    className="form-control"
-                    value={item.description}
-                    onChange={(e) => {
-                      const selectedItem = invoiceItems.find(
-                        (i) => i?.description === e.target.value
-                      );
-                      handleItemChange(idx, "description", e.target.value);
-                      if (selectedItem) {
-                        handleItemChange(idx, "rate", selectedItem.rate);
-                        handleItemChange(
-                          idx,
-                          "gstPercentage",
-                          selectedItem.gstPercentage
-                        );
-                      } else {
-                        handleItemChange(idx, "rate", 0);
-                        handleItemChange(idx, "gstPercentage", 0);
-                      }
-                    }}
-                  >
-                    <option value="">Select Item</option>
-                    {invoiceItems.map((i) => (
-                      <option key={i.itemId} value={i.description ?? ""}>
-                        {i.description} (₹{i.rate})
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td>{item.gstPercentage}%</td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      handleItemChange(idx, "quantity", Number(e.target.value))
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.rate}
-                    disabled
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.amount.toFixed(2)}
-                    disabled
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.taxAmount?.toFixed(2) || "0.00"}
-                    disabled
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    value={item.total?.toFixed(2) || "0.00"}
-                    disabled
-                  />
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteItem(idx)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Invoice Summary */}
-      <div className="row mt-4">
-        <div className="col-md-4">
-          <h5>Sub Total: ₹{formData.subTotal.toFixed(2)}</h5>
-        </div>
-        {formData.cgst > 0 || formData.sgst > 0 ? (
-          <>
-            <div className="col-md-4">
-              <h5>CGST (9%): ₹{formData.cgst.toFixed(2)}</h5>
-            </div>
-            <div className="col-md-4">
-              <h5>SGST (9%): ₹{formData.sgst.toFixed(2)}</h5>
-            </div>
-          </>
-        ) : (
-          <div className="col-md-4">
-            <h5>IGST (18%): ₹{formData.igst.toFixed(2)}</h5>
-          </div>
-        )}
-      </div>
-      <div className="row mb-4">
-        <div className="col-md-12 text-end">
-          <h5>Total Amount: ₹{formData.totalAmount.toFixed(2)}</h5>
-        </div>
-      </div>
-
-      {/* Bank Details */}
-      <div className="row mb-4">
-        <div className="col-md-12">
-          <h5>Bank Details</h5>
-          <p>
-            <strong>Account Name:</strong> Confab 360 degree
-            <br />
-            <strong>Account Number:</strong> 181805001263
-            <br />
-            <strong>IFSC:</strong> ICIC0001818
-            <br />
-            <strong>Account Type:</strong> Current
-            <br />
-            <strong>Bank:</strong> ICICI Bank Ltd
-          </p>
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="d-flex justify-content-between">
-        <button className="btn btn-secondary" onClick={addItem}>
-          Add Item
-        </button>
-        <button className="btn btn-primary" onClick={handleSubmit}>
-          Submit Invoice
-        </button>
       </div>
     </div>
   );
