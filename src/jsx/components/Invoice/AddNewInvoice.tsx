@@ -1,355 +1,406 @@
-// /src/components/invoice/AddNewInvoice.tsx
-
-import React, { useState } from "react";
+// src/components/invoice/AddNewInvoice.tsx
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Toast, ProgressBar } from "react-bootstrap";
+
+import { createInvoice } from "../../../services/InvoiceService";
+import { getAllInvoiceItems } from "../../../services/InvoiceItemService";
 import { Invoice } from "../../models/Invoice";
 import { InvoiceItem } from "../../models/InvoiceItem";
-import { createInvoice } from "../../../services/InvoiceService";
 
 const AddNewInvoice: React.FC = () => {
-	// Initialize with two default line items if desired:
-	// 1) Trainer Fees, 2) Outbound Hotel
-	const [formData, setFormData] = useState<Invoice>({
-		companyId: null,
-		companyName: "",
-		subTotal: 0,
-		commissionCut: 0,
-		tax: 0,
-		totalAmount: 0,
-		items: [
-			{
-				description: "Trainer Fees",
-				quantity: 1,
-				rate: 1000,
-				amount: 0,
-			},
-			{
-				description: "Outbound Hotel",
-				quantity: 1,
-				rate: 2000,
-				amount: 0,
-			},
-		],
-	});
+  const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
+  const [formData, setFormData] = useState<Invoice>({
+    // Invoice number will be generated on the server.
+    invoiceDate: "",
+    billedBy: {
+      companyName: "",
+      address: "",
+      gstin: "",
+      pan: "",
+      email: "",
+      phone: "",
+    },
+    billedTo: {
+      companyName: "",
+      address: "",
+      gstin: "",
+      pan: "",
+      email: "",
+      phone: "",
+    },
+    items: [
+      {
+        itemId: "",
+        description: "",
+        quantity: 1,
+        rate: 0,
+        amount: 0,
+        gstPercentage: 0,
+        taxAmount: 0,
+        total: 0,
+      },
+    ],
+    subTotal: 0,
+    tax: 0,
+    totalAmount: 0,
+    cgst: 0,
+    sgst: 0,
+    igst: 0,
+  });
 
-	const [errors, setErrors] = useState<{ [key: string]: string }>({});
-	const [showToast, setShowToast] = useState(false);
-	const [progress, setProgress] = useState(0);
-	const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-	const navigate = useNavigate();
+  useEffect(() => {
+    const loadInvoiceItems = async () => {
+      const items = await getAllInvoiceItems();
+      setInvoiceItems(items);
+    };
+    loadInvoiceItems();
+  }, []);
 
-	// Validate form fields
-	const validateForm = () => {
-		const newErrors: { [key: string]: string } = {};
+  // Handle changes for Billed By / Billed To fields
+  const handleBilledInfoChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    section: "billedBy" | "billedTo"
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], [name]: value },
+    }));
+  };
 
-		if (!formData.companyId) {
-			newErrors.companyId = "Company ID is required.";
-		}
-		if (!formData.companyName?.trim()) {
-			newErrors.companyName = "Company Name is required.";
-		}
+  // Handle changes for invoice item fields and recalc line totals
+  const handleItemChange = (index: number, field: string, value: any) => {
+    setFormData((prev) => {
+      const items = [...prev.items];
+      let item = { ...items[index], [field]: value };
 
-		// If you want to ensure at least one item, you can check here:
-		if (!formData.items || formData.items.length === 0) {
-			newErrors.items = "Please add at least one line item.";
-		}
+      // Recalculate amount when quantity or rate changes
+      item.amount = item.quantity * item.rate;
+      // If gstPercentage is provided, calculate tax amount and total
+      if (item.gstPercentage) {
+        item.taxAmount = parseFloat(
+          ((item.amount * item.gstPercentage) / 100).toFixed(2)
+        );
+        item.total = parseFloat((item.amount + item.taxAmount).toFixed(2));
+      } else {
+        item.taxAmount = 0;
+        item.total = item.amount;
+      }
+      items[index] = item;
+      return { ...prev, items };
+    });
+  };
 
-		return newErrors;
-	};
+  const deleteItem = (index: number) => {
+    setFormData((prev) => {
+      const items = [...prev.items];
+      items.splice(index, 1);
+      return { ...prev, items };
+    });
+  };
 
-	// Handle top-level numeric fields for the invoice (like companyId)
-	const handleInvoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { id, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[id]: id === "companyId" ? parseInt(value, 10) : value,
-		}));
-	};
+  const addItem = () => {
+    setFormData((prev) => ({
+      ...prev,
+      items: [
+        ...prev.items,
+        {
+          itemId: "",
+          description: "",
+          quantity: 1,
+          rate: 0,
+          amount: 0,
+          gstPercentage: 0,
+          taxAmount: 0,
+          total: 0,
+        },
+      ],
+    }));
+  };
 
-	// Handle top-level text fields (like companyName)
-	const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { id, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[id]: value,
-		}));
-	};
+  // Calculate invoice-level totals and apply GST rules based on Billed To address.
+  const calculateTotals = () => {
+    const subTotal = formData.items.reduce((acc, item) => acc + item.amount, 0);
+    let invoiceTax = 0;
+    let cgst = 0,
+      sgst = 0,
+      igst = 0;
 
-	// Handle changes to individual line items
-	const handleItemChange = (
-		e: React.ChangeEvent<HTMLInputElement>,
-		index: number
-	) => {
-		const { name, value } = e.target;
-		setFormData((prev) => {
-			const updatedItems = [...prev.items];
-			const itemToUpdate = { ...updatedItems[index] };
+    // Check if billedTo address includes "delhi" (case-insensitive)
+    if (
+      formData.billedTo.address &&
+      formData.billedTo.address.toLowerCase().includes("delhi")
+    ) {
+      cgst = subTotal * 0.09;
+      sgst = subTotal * 0.09;
+      invoiceTax = cgst + sgst;
+    } else {
+      igst = subTotal * 0.18;
+      invoiceTax = igst;
+    }
+    const totalAmount = subTotal + invoiceTax;
+    setFormData((prev) => ({
+      ...prev,
+      subTotal,
+      cgst,
+      sgst,
+      igst,
+      tax: invoiceTax,
+      totalAmount,
+    }));
+  };
 
-			if (name === "description") {
-				itemToUpdate.description = value;
-			} else if (name === "quantity") {
-				itemToUpdate.quantity = parseInt(value, 10) || 0;
-			} else if (name === "rate") {
-				itemToUpdate.rate = parseFloat(value) || 0;
-			}
+  const handleSubmit = async () => {
+    calculateTotals();
+    // createInvoice should generate the invoice number on the backend.
+    await createInvoice(formData);
+    navigate("/invoices");
+  };
 
-			// Recalculate amount = quantity * rate
-			itemToUpdate.amount = itemToUpdate.quantity * itemToUpdate.rate;
+  return (
+    <div className="container">
+      {/* Card Container */}
+      <div className="card w-100 border-0 rounded-0">
+        <div className="card-header bg-primary text-white">
+          <h4 className="card-title mb-0 text-white text-center">
+            Add New Invoice
+          </h4>
+        </div>
+        <div className="card-body">
+          {/* Invoice Header */}
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label className="text-primary">Invoice Date</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  placeholder="Invoice Date"
+                  value={formData.invoiceDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, invoiceDate: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+          </div>
 
-			updatedItems[index] = itemToUpdate;
-			return { ...prev, items: updatedItems };
-		});
-	};
+          {/* Billed By / Billed To Sections */}
+          <div className="row mb-4">
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed By</h5>
+              {Object.keys(formData.billedBy).map((field) => (
+                <div className="form-group" key={field}>
+                  <input
+                    className="form-control my-1"
+                    name={field}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    value={(formData.billedBy as any)[field]}
+                    onChange={(e) => handleBilledInfoChange(e, "billedBy")}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed To</h5>
+              {Object.keys(formData.billedTo).map((field) => (
+                <div className="form-group" key={field}>
+                  <input
+                    className="form-control my-1"
+                    name={field}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    value={(formData.billedTo as any)[field]}
+                    onChange={(e) => handleBilledInfoChange(e, "billedTo")}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
-	// Add a new line item
-	const addNewItem = () => {
-		setFormData((prev) => ({
-			...prev,
-			items: [
-				...prev.items,
-				{ description: "", quantity: 1, rate: 0, amount: 0 },
-			],
-		}));
-	};
+          {/* Invoice Items Table */}
+          <h5 className="mt-4 text-primary">Invoice Items</h5>
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr className="text-center">
+                  <th>S.No</th>
+                  <th>Particulars</th>
+                  <th>GST (%)</th>
+                  <th>Quantity</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>Tax</th>
+                  <th>Total</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {formData.items.map((item, idx) => (
+                  <tr key={idx} className="text-center">
+                    <td>{idx + 1}</td>
+                    <td>
+                      <select
+                        className="form-control"
+                        value={item.description}
+                        onChange={(e) => {
+                          const selectedItem = invoiceItems.find(
+                            (i) => i?.description === e.target.value
+                          );
+                          handleItemChange(idx, "description", e.target.value);
+                          if (selectedItem) {
+                            handleItemChange(idx, "rate", selectedItem.rate);
+                            handleItemChange(
+                              idx,
+                              "gstPercentage",
+                              selectedItem.gstPercentage
+                            );
+                          } else {
+                            handleItemChange(idx, "rate", 0);
+                            handleItemChange(idx, "gstPercentage", 0);
+                          }
+                        }}
+                      >
+                        <option value="">Select Item</option>
+                        {invoiceItems.map((i) => (
+                          <option
+                            key={i.itemId}
+                            value={i.description ?? ""}
+                          >
+                            {i.description} (₹{i.rate})
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>{item.gstPercentage}%</td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleItemChange(
+                            idx,
+                            "quantity",
+                            Number(e.target.value)
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.rate}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.amount.toFixed(2)}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.taxAmount?.toFixed(2) || "0.00"}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={item.total?.toFixed(2) || "0.00"}
+                        disabled
+                      />
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteItem(idx)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-	// Remove an existing line item
-	const removeItem = (index: number) => {
-		setFormData((prev) => {
-			const updatedItems = [...prev.items];
-			updatedItems.splice(index, 1);
-			return { ...prev, items: updatedItems };
-		});
-	};
+          {/* Invoice Summary */}
+          <div className="row mt-4">
+            <div className="col-md-4">
+              <h5 className="text-primary">
+                Sub Total: ₹{formData.subTotal.toFixed(2)}
+              </h5>
+            </div>
+            {formData.cgst > 0 || formData.sgst > 0 ? (
+              <>
+                <div className="col-md-4">
+                  <h5 className="text-primary">
+                    CGST (9%): ₹{formData.cgst.toFixed(2)}
+                  </h5>
+                </div>
+                <div className="col-md-4">
+                  <h5 className="text-primary">
+                    SGST (9%): ₹{formData.sgst.toFixed(2)}
+                  </h5>
+                </div>
+              </>
+            ) : (
+              <div className="col-md-4">
+                <h5 className="text-primary">
+                  IGST (18%): ₹{formData.igst.toFixed(2)}
+                </h5>
+              </div>
+            )}
+          </div>
+          <div className="row mb-4">
+            <div className="col-md-12 text-end">
+              <h5 className="text-primary">
+                Total Amount: ₹{formData.totalAmount.toFixed(2)}
+              </h5>
+            </div>
+          </div>
 
-	const handleSubmit = async () => {
-		const formErrors = validateForm();
-		if (Object.keys(formErrors).length > 0) {
-			setErrors(formErrors);
-			return;
-		}
-		setErrors({});
+          {/* Bank Details */}
+          <div className="row mb-4">
+            <div className="col-md-12">
+              <h5 className="text-primary">Bank Details</h5>
+              <p className="text-muted">
+                <strong>Account Name:</strong> Confab 360 degree
+                <br />
+                <strong>Account Number:</strong> 181805001263
+                <br />
+                <strong>IFSC:</strong> ICIC0001818
+                <br />
+                <strong>Account Type:</strong> Current
+                <br />
+                <strong>Bank:</strong> ICICI Bank Ltd
+              </p>
+            </div>
+          </div>
 
-		// Compute subTotal, commission (20%), and tax before sending to API
-		let subTotal = 0;
-		formData.items.forEach((item) => {
-			subTotal += item.amount;
-		});
-
-		// 20% commission
-		const commissionCut = subTotal * 0.2;
-
-		// Example: 18% GST on (subTotal + commission)
-		const tax = (subTotal + commissionCut) * 0.18;
-
-		const totalAmount = subTotal + commissionCut + tax;
-
-		// Build final payload
-		const payload: Invoice = {
-			...formData,
-			subTotal,
-			commissionCut,
-			tax,
-			totalAmount,
-		};
-
-		try {
-			setIsLoading(true);
-			setShowToast(true);
-			setProgress(0);
-
-			// Simulate a progress bar
-			const interval = setInterval(() => {
-				setProgress((old) => {
-					if (old >= 100) {
-						clearInterval(interval);
-						return 100;
-					}
-					return old + 20;
-				});
-			}, 300);
-
-			await createInvoice(payload);
-
-			clearInterval(interval);
-			setProgress(100);
-
-			// Close toast and navigate away
-			setTimeout(() => {
-				setShowToast(false);
-				navigate("/invoices");
-			}, 800);
-		} catch (error) {
-			console.error("Error saving invoice:", error);
-			setIsLoading(false);
-			// Keep toast open, show error
-			setProgress(100);
-		}
-	};
-
-	return (
-		<>
-			{/* Toast */}
-			<Toast
-				onClose={() => setShowToast(false)}
-				show={showToast}
-				delay={3000}
-				autohide>
-				<Toast.Header>
-					<strong className="me-auto">
-						{isLoading ? "Saving Invoice..." : "Error"}
-					</strong>
-				</Toast.Header>
-				<Toast.Body>
-					{isLoading ? (
-						<ProgressBar animated now={progress} />
-					) : (
-						"An error occurred while saving the invoice."
-					)}
-				</Toast.Body>
-			</Toast>
-
-			<div className="container-fluid p-0">
-				<div className="row g-0">
-					<div className="col-12">
-						<div className="card w-100 border-0 rounded-0">
-							<div className="card-header bg-primary text-white">
-								<h4 className="card-title mb-0 text-white">Add New Invoice</h4>
-							</div>
-							<div className="card-body">
-								<form>
-									<div className="row">
-										{/* Company ID */}
-										<div className="col-lg-6 mb-3">
-											<label className="text-label text-primary">
-												Company ID <span className="required">*</span>
-											</label>
-											<input
-												type="number"
-												id="companyId"
-												className="form-control"
-												value={formData.companyId ?? ""}
-												onChange={handleInvoiceChange}
-											/>
-											{errors.companyId && (
-												<small className="text-danger">
-													{errors.companyId}
-												</small>
-											)}
-										</div>
-
-										{/* Company Name */}
-										<div className="col-lg-6 mb-3">
-											<label className="text-label text-primary">
-												Company Name <span className="required">*</span>
-											</label>
-											<input
-												type="text"
-												id="companyName"
-												className="form-control"
-												value={formData.companyName}
-												onChange={handleTextChange}
-											/>
-											{errors.companyName && (
-												<small className="text-danger">
-													{errors.companyName}
-												</small>
-											)}
-										</div>
-									</div>
-
-									{/* Line Items Section */}
-									<div className="row mt-4">
-										<div className="col-12 mb-2">
-											<h5 className="text-primary">Line Items</h5>
-											{errors.items && (
-												<small className="text-danger d-block">
-													{errors.items}
-												</small>
-											)}
-										</div>
-
-										{formData.items.map((item, index) => (
-											<div key={index} className="row mb-2">
-												<div className="col-md-4">
-													<input
-														type="text"
-														className="form-control"
-														name="description"
-														value={item.description}
-														placeholder="Item Description"
-														onChange={(e) => handleItemChange(e, index)}
-													/>
-												</div>
-												<div className="col-md-2">
-													<input
-														type="number"
-														className="form-control"
-														name="quantity"
-														value={item.quantity}
-														onChange={(e) => handleItemChange(e, index)}
-													/>
-												</div>
-												<div className="col-md-2">
-													<input
-														type="number"
-														className="form-control"
-														name="rate"
-														value={item.rate}
-														onChange={(e) => handleItemChange(e, index)}
-													/>
-												</div>
-												<div className="col-md-2">
-													<input
-														type="number"
-														className="form-control"
-														name="amount"
-														value={item.amount}
-														disabled
-													/>
-												</div>
-												<div className="col-md-2">
-													<button
-														type="button"
-														className="btn btn-danger"
-														onClick={() => removeItem(index)}>
-														Remove
-													</button>
-												</div>
-											</div>
-										))}
-
-										<div className="col-12">
-											<button
-												type="button"
-												className="btn btn-secondary"
-												onClick={addNewItem}>
-												+ Add Another Item
-											</button>
-										</div>
-									</div>
-
-									{/* Submit */}
-									<div className="row mt-4">
-										<div className="col-12">
-											<button
-												type="button"
-												className="btn btn-primary"
-												onClick={handleSubmit}>
-												Submit
-											</button>
-										</div>
-									</div>
-								</form>
-								{/* End of form */}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+          {/* Action Buttons */}
+          <div className="d-flex justify-content-between">
+            <button className="btn btn-secondary" onClick={addItem}>
+              Add Item
+            </button>
+            <button className="btn btn-primary" onClick={handleSubmit}>
+              Submit Invoice
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AddNewInvoice;

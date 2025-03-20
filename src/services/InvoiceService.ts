@@ -1,6 +1,7 @@
 // /src/services/InvoiceService.ts
 import axios from 'axios';
 import { Invoice } from '../jsx/models/Invoice';
+import { InvoiceItem } from '../jsx/models/InvoiceItem';
 
 const API_URL = 'https://localhost:7170/api/invoice';
 
@@ -15,7 +16,7 @@ const getAntiForgeryToken = async () => {
         return response.data.token;
     } catch (error) {
         console.error('Error getting anti-forgery token:', error);
-        throw new Error('Failed to retrieve anti-forgery token');
+        throw new Error('Failed to get anti-forgery token');
     }
 };
 
@@ -65,6 +66,7 @@ export const getInvoiceById = async (id: number) => {
         throw new Error('Failed to retrieve invoice details');
     }
 };
+
 
 // -------------------- UPDATE (PUT) --------------------
 export const updateInvoice = async (id: number, invoice: Invoice) => {

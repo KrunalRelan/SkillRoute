@@ -153,14 +153,14 @@ const Markup = () => {
 		{ url: "old-invoice", component: <OldInvoice /> },
 		{ url: "invoice-detail/:id", component: <InvoiceDetail /> },
 
-		{ url: "user", component: <User /> },
-		{ url: "activity", component: <Activity /> },
-		{ url: "calendar", component: <HomeCalendar /> },
+		// { url: "user", component: <User /> },
+		// { url: "activity", component: <Activity /> },
+		// { url: "calendar", component: <HomeCalendar /> },
 		//App Profile
-		{ url: "app-profile", component: <AppProfile /> },
-		{ url: "post-details", component: <PostDetails /> },
-		{ url: "edit-profile", component: <EditProfile /> },
-		{ url: "app-calender", component: <Calendar /> },
+		// { url: "app-profile", component: <AppProfile /> },
+		// { url: "post-details", component: <PostDetails /> },
+		// { url: "edit-profile", component: <EditProfile /> },
+		// { url: "app-calender", component: <Calendar /> },
 		//App -> shops
 		{ url: "ecom-product-grid", component: <ProductGrid /> },
 		{ url: "ecom-product-list", component: <ProductList /> },
@@ -170,50 +170,50 @@ const Markup = () => {
 		{ url: "ecom-invoice", component: <Invoice /> },
 		{ url: "ecom-customers", component: <Customers /> },
 		//Charts
-		{ url: "chart-apexchart", component: <ApexChart /> },
-		{ url: "chart-rechart", component: <RechartJs /> },
-		{ url: "chart-chartjs", component: <ChartJs /> },
-		{ url: "chart-sparkline", component: <SparklineChart /> },
+		// { url: "chart-apexchart", component: <ApexChart /> },
+		// { url: "chart-rechart", component: <RechartJs /> },
+		// { url: "chart-chartjs", component: <ChartJs /> },
+		// { url: "chart-sparkline", component: <SparklineChart /> },
 
-		//bootstrap
-		{ url: "ui-modal", component: <UiModal /> },
-		{ url: "ui-popover", component: <UiPopOver /> },
-		{ url: "ui-typography", component: <UiTypography /> },
-		{ url: "ui-grid", component: <UiGrid /> },
+		// //bootstrap
+		// { url: "ui-modal", component: <UiModal /> },
+		// { url: "ui-popover", component: <UiPopOver /> },
+		// { url: "ui-typography", component: <UiTypography /> },
+		// { url: "ui-grid", component: <UiGrid /> },
 
-		//Plugins
-		{ url: "uc-select2", component: <Select2 /> },
-		{ url: "uc-noui-slider", component: <MainNouiSlider /> },
-		{ url: "uc-toastr", component: <Toastr /> },
-		{ url: "uc-lightgallery", component: <Lightgallery /> },
-		{ url: "uc-sweetalert", component: <MainSweetAlert /> },
-		{ url: "form-element", component: <Element /> },
-		{ url: "form-wizard", component: <Wizard /> },
-		{ url: "form-ckeditor", component: <CkEditor /> },
-		{ url: "form-validation", component: <FormValidation /> },
-		//widget
-		{ url: "widget", component: <Widget /> },
-		/// table
-		{ url: "table-filtering", component: <FilteringTable /> },
-		{ url: "table-sorting", component: <SortingTable /> },
-		{ url: "table-bootstrap-basic", component: <BootstrapTable /> },
-		{ url: "form-pickers", component: <Pickers /> },
+		// //Plugins
+		// { url: "uc-select2", component: <Select2 /> },
+		// { url: "uc-noui-slider", component: <MainNouiSlider /> },
+		// { url: "uc-toastr", component: <Toastr /> },
+		// { url: "uc-lightgallery", component: <Lightgallery /> },
+		// { url: "uc-sweetalert", component: <MainSweetAlert /> },
+		// { url: "form-element", component: <Element /> },
+		// { url: "form-wizard", component: <Wizard /> },
+		// { url: "form-ckeditor", component: <CkEditor /> },
+		// { url: "form-validation", component: <FormValidation /> },
+		// //widget
+		// { url: "widget", component: <Widget /> },
+		// /// table
+		// { url: "table-filtering", component: <FilteringTable /> },
+		// { url: "table-sorting", component: <SortingTable /> },
+		// { url: "table-bootstrap-basic", component: <BootstrapTable /> },
+		// { url: "form-pickers", component: <Pickers /> },
 	];
-	const routhPath2 = [
-		//Bootstrap
-		{ url: "ui-accordion", component: <UiAccordion /> },
-		{ url: "ui-alert", component: <UiAlert /> },
-		{ url: "ui-badge", component: <UiBadge /> },
-		{ url: "ui-button", component: <UiButton /> },
-		{ url: "ui-button-group", component: <UiButtonGroup /> },
-		{ url: "ui-list-group", component: <UiListGroup /> },
-		{ url: "ui-card", component: <UiCards /> },
-		{ url: "/ui-carousel", component: <UiCarousel /> },
-		{ url: "/ui-dropdown", component: <UiDropDown /> },
-		{ url: "/ui-progressbar", component: <UiProgressBar /> },
-		{ url: "/ui-tab", component: <UiTab /> },
-		{ url: "/ui-pagination", component: <UiPagination /> },
-	];
+	// const routhPath2 = [
+	// 	//Bootstrap
+	// 	{ url: "ui-accordion", component: <UiAccordion /> },
+	// 	{ url: "ui-alert", component: <UiAlert /> },
+	// 	{ url: "ui-badge", component: <UiBadge /> },
+	// 	{ url: "ui-button", component: <UiButton /> },
+	// 	{ url: "ui-button-group", component: <UiButtonGroup /> },
+	// 	{ url: "ui-list-group", component: <UiListGroup /> },
+	// 	{ url: "ui-card", component: <UiCards /> },
+	// 	{ url: "/ui-carousel", component: <UiCarousel /> },
+	// 	{ url: "/ui-dropdown", component: <UiDropDown /> },
+	// 	{ url: "/ui-progressbar", component: <UiProgressBar /> },
+	// 	{ url: "/ui-tab", component: <UiTab /> },
+	// 	{ url: "/ui-pagination", component: <UiPagination /> },
+	// ];
 
 	return (
 		<>
@@ -235,6 +235,7 @@ const Markup = () => {
 							key={i}
 							exact
 							path={`/${data.url}`}
+							 
 							element={data.component}
 						/>
 					))}
@@ -247,7 +248,7 @@ const Markup = () => {
 					<Route path="/email-inbox" exact element={<Inbox />} />
 					<Route path="/email-read" exact element={<Read />} />
 				</Route>
-				<Route element={<Layout6 />}>
+				{/* <Route element={<Layout6 />}>
 					{routhPath2.map((data, i) => (
 						<Route
 							key={i}
@@ -256,7 +257,7 @@ const Markup = () => {
 							element={data.component}
 						/>
 					))}
-				</Route>
+				</Route> */}
 			</Routes>
 			<ScrollToTop />
 		</>
