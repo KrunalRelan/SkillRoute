@@ -168,3 +168,15 @@ export const markAsPartiallyPaid = async (id: number) => {
         throw new Error('Failed to mark invoice as partially paid');
     }
 };
+
+export const getAllInvoiceItems = async () => {
+    try {
+        const response = await axios.get<InvoiceItem[]>(`${API_URL}/items`, {
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error getting invoice items:', error);
+        throw new Error('Failed to retrieve invoice items');
+    }
+}
