@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import * as ReactDOM from "react-dom";
 
 import {
   createInvoice,
@@ -8,9 +9,17 @@ import {
 
 import { Invoice } from "../../models/Invoice";
 import { InvoiceItem } from "../../models/InvoiceItem";
+import { getAllCompanies } from "../../../services/CompanyService";
+import { Company } from "../../models/Company";
+import { Enquiry } from "../../models/Enquiry"; // Import Enquiry
 
 const AddNewInvoice: React.FC = () => {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+
   const [formData, setFormData] = useState<Invoice>({
     invoiceDate: new Date().toISOString().split("T")[0], // Today's date
     billedBy: {
@@ -23,12 +32,15 @@ const AddNewInvoice: React.FC = () => {
       phone: "+91 99719 07777",
     },
     billedTo: {
+      companyId: null,
       companyName: "",
       address: "",
       gstin: "",
       pan: "",
       email: "",
       phone: "",
+      // Optionally, you can add a field for enquiry if needed:
+      enquiryId: null,
     },
     items: [
       {
@@ -62,6 +74,79 @@ const AddNewInvoice: React.FC = () => {
     calculateTotals();
   }, [formData.items, formData.billedTo.address]);
 
+  useEffect(() => {
+    const loadCompanies = async () => {
+      const data = await getAllCompanies();
+      if (data) {
+        setCompanies(data);
+      }
+    };
+    loadCompanies();
+  }, []);
+
+  // Function was removed to avoid redeclaration with the function defined later in the code
+  // useEffect(() => {
+  //   const fetchCompaniesAndEnquiries = async () => {
+  //     try {
+  //       const response = await getAllCompanies();
+  //       setCompanies(response.companies || response); // Adjust based on your actual response structure
+
+  //       // Extract enquiries from the response
+  //       if (response.enquiries) {
+  //         setEnquiries(response.enquiries);
+  //       } else if (response[0]?.enquiries) {
+  //         // If enquiries are nested inside each company
+  //         const allEnquiries: Enquiry[] = response.flatMap(
+  //           (company: Company) => company.enquires || []
+  //         );
+  //         setEnquiries(allEnquiries);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchCompaniesAndEnquiries();
+  // }, []);
+
+  useEffect(() => {
+    const fetchCompaniesAndEnquiries = async () => {
+      try {
+        const response = await getAllCompanies();
+        console.log("API Response:", response);
+        setCompanies(response || []);
+
+        // Extract all enquiries from companies
+        let allEnquiries: Enquiry[] = [];
+
+        if (response && Array.isArray(response)) {
+          // Loop through each company and collect enquiries
+          response.forEach((company: Company) => {
+            // Check both possible property names
+            const companyEnquiries =
+              company.enquiries || company.enquiries || [];
+            if (companyEnquiries && companyEnquiries.length > 0) {
+              allEnquiries = [...allEnquiries, ...companyEnquiries];
+            }
+          });
+        }
+
+        console.log("Extracted Enquiries:", allEnquiries);
+        setEnquiries(allEnquiries);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Load invoice items
+    const loadInvoiceItems = async () => {
+      const items = await getAllInvoiceItems();
+      setInvoiceItems(items);
+    };
+
+    fetchCompaniesAndEnquiries();
+    loadInvoiceItems();
+  }, []);
   const handleBilledInfoChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     section: "billedBy" | "billedTo"
@@ -167,6 +252,49 @@ const AddNewInvoice: React.FC = () => {
     navigate("/invoices");
   };
 
+  // Handler for when a company is selected from the dropdown
+  const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const companyId = Number(e.target.value);
+    const company = companies.find((c) => c.companyId === companyId) || null;
+    if (company) {
+      setSelectedCompany(company);
+      setEnquiries(company.enquiries || []);
+      // Update billedTo info from the selected company
+      setFormData((prev) => ({
+        ...prev,
+        billedTo: {
+          ...prev.billedTo,
+          companyId: company.companyId,
+          companyName: company.companyName,
+          address: company.addressLine || "",
+          email: company.email || "",
+          phone: company.phone || "",
+          enquiryId: null, // Reset enquiry when company changes
+        },
+      }));
+    } else {
+      setSelectedCompany(null);
+    }
+    // Clear any previously selected enquiry
+    setSelectedEnquiry(null);
+  };
+
+  // Handler for when an enquiry is selected from the dropdown
+  const handleEnquiryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const enquiryId = Number(e.target.value);
+    // Find the enquiry in the global enquiries array, not just in selectedCompany
+    const enq = enquiries.find((enq: Enquiry) => enq.id === enquiryId) || null;
+    setSelectedEnquiry(enq);
+
+    setFormData((prev) => ({
+      ...prev,
+      billedTo: {
+        ...prev.billedTo,
+        enquiryId: enq ? enq.id || null : null,
+      },
+    }));
+  };
+
   return (
     <div className="container">
       {errors.length > 0 && (
@@ -199,12 +327,77 @@ const AddNewInvoice: React.FC = () => {
 
           {/* Billed By & Billed To */}
           <div className="row mb-4">
-            {["billedBy", "billedTo"].map((section) => (
-              <div className="col-md-6" key={section}>
-                <h5 className="text-primary">
-                  {section === "billedBy" ? "Billed By" : "Billed To"}
-                </h5>
-                {Object.keys(formData[section as "billedBy" | "billedTo"]).map((field) => (
+            {/* Billed By Section */}
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed By</h5>
+              {Object.keys(formData.billedBy).map((field) => (
+                <div className="form-group my-1" key={field}>
+                  <input
+                    className="form-control"
+                    name={field}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    value={
+                      formData.billedBy[field as keyof typeof formData.billedBy]
+                    }
+                    onChange={(e) => handleBilledInfoChange(e, "billedBy")}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Billed To Section with new dropdowns */}
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed To</h5>
+              {/* Company Dropdown */}
+              <div className="form-group my-1">
+                <label>Select Company</label>
+                <select
+                  className="form-control"
+                  value={
+                    formData.billedTo.companyId
+                      ? formData.billedTo.companyId.toString()
+                      : ""
+                  }
+                  onChange={handleCompanyChange}
+                >
+                  <option value="">Select Company</option>
+                  {companies.map((company) => (
+                    <option
+                      key={company.companyId}
+                      value={company.companyId ?? 0}
+                    >
+                      {company.companyName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Enquiry Dropdown */}
+              <div className="form-group mb-3">
+                <label>Select Enquiry</label>
+                <select
+                  className="form-control"
+                  value={selectedEnquiry?.id || ""}
+                  onChange={handleEnquiryChange}
+                  disabled={!selectedCompany}
+                >
+                  <option value="">Select an enquiry</option>
+                  {selectedCompany?.enquiries?.map((enq: Enquiry) => (
+                    <option key={enq.id} value={enq.id ?? 0}>
+                      {enq.areaOfTraining ||
+                        enq.enquirerName ||
+                        `Enquiry #${enq.id}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Other Billed To fields (excluding companyId and companyName) */}
+              {Object.keys(formData.billedTo)
+                .filter(
+                  (field) => field !== "companyId" && field !== "companyName"
+                )
+                .map((field) => (
                   <div className="form-group my-1" key={field}>
                     <input
                       className="form-control"
@@ -212,18 +405,16 @@ const AddNewInvoice: React.FC = () => {
                       placeholder={
                         field.charAt(0).toUpperCase() + field.slice(1)
                       }
-                      value={(formData[section as "billedBy" | "billedTo"])[field as keyof typeof formData.billedBy]}
-                      onChange={(e) =>
-                        handleBilledInfoChange(
-                          e,
-                          section as "billedBy" | "billedTo"
-                        )
+                      value={
+                        formData.billedTo[
+                          field as keyof typeof formData.billedTo
+                        ] ?? ""
                       }
+                      onChange={(e) => handleBilledInfoChange(e, "billedTo")}
                     />
                   </div>
                 ))}
-              </div>
-            ))}
+            </div>
           </div>
 
           {/* Items Table */}
@@ -277,7 +468,8 @@ const AddNewInvoice: React.FC = () => {
                           <option value="">Select Item</option>
                           {invoiceItems.map((i) => (
                             <option key={i.itemId} value={i.itemDescription}>
-                              {i.itemDescription} (₹{i.rate})
+                              {i.itemDescription}
+                              {/* (₹{i.rate}) */}
                             </option>
                           ))}
                         </select>
@@ -302,7 +494,13 @@ const AddNewInvoice: React.FC = () => {
                           type="number"
                           className="form-control"
                           value={item.rate}
-                          disabled
+                          onChange={(e) =>
+                            handleItemChange(
+                              idx,
+                              "rate",
+                              Number(e.target.value)
+                            )
+                          }
                         />
                       </td>
                       <td>
@@ -344,6 +542,7 @@ const AddNewInvoice: React.FC = () => {
             </table>
           </div>
 
+          {/* Totals */}
           <div className="text-end my-3">
             <button className="btn btn-secondary me-2" onClick={addItem}>
               Add Item
@@ -353,18 +552,47 @@ const AddNewInvoice: React.FC = () => {
             </button>
           </div>
 
-          {/* Totals */}
-          <div className="mt-4">
-            <h5>Sub Total: ₹{formData.subTotal.toFixed(2)}</h5>
-            {formData.cgst > 0 || formData.sgst > 0 ? (
-              <>
-                <h6>CGST: ₹{formData.cgst.toFixed(2)}</h6>
-                <h6>SGST: ₹{formData.sgst.toFixed(2)}</h6>
-              </>
-            ) : (
-              <h6>IGST: ₹{formData.igst.toFixed(2)}</h6>
-            )}
-            <h4>Total Amount: ₹{formData.totalAmount.toFixed(2)}</h4>
+          {/* Totals with box separator - more compact and right-aligned */}
+          <div className="row mt-5">
+            <div className="col-md-5 col-lg-4 ms-auto">
+              {" "}
+              {/* Only takes 3-4 columns and pushed to right */}
+              <div className="card shadow-sm border">
+                <div className="card-body">
+                  <h5 className="mb-3">Invoice Summary</h5>
+                  <div className="border-top w-100 mb-2"></div>
+
+                  <div className="d-flex justify-content-between w-100">
+                    <span>Sub Total:</span>
+                    <span>₹{formData.subTotal.toFixed(2)}</span>
+                  </div>
+
+                  {formData.cgst > 0 || formData.sgst > 0 ? (
+                    <>
+                      <div className="d-flex justify-content-between w-100">
+                        <span>CGST:</span>
+                        <span>₹{formData.cgst.toFixed(2)}</span>
+                      </div>
+                      <div className="d-flex justify-content-between w-100">
+                        <span>SGST:</span>
+                        <span>₹{formData.sgst.toFixed(2)}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="d-flex justify-content-between w-100">
+                      <span>IGST:</span>
+                      <span>₹{formData.igst.toFixed(2)}</span>
+                    </div>
+                  )}
+
+                  <div className="border-top w-100 my-2"></div>
+                  <div className="d-flex justify-content-between w-100 fw-bold">
+                    <span>Total Amount:</span>
+                    <span>₹{formData.totalAmount.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Bank Details */}

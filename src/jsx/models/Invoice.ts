@@ -14,12 +14,14 @@ export interface Invoice {
         phone: string;
     };
     billedTo: {
+        companyId?: number | null;
         companyName: string;
         address: string;
         gstin: string;
         pan: string;
         email: string;
         phone: string;
+        enquiryId: number | null;
     };
     items: InvoiceItem[];
     subTotal: number;
