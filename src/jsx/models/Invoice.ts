@@ -9,7 +9,6 @@ export interface Invoice {
         companyName: string;
         address: string;
         gstin: string;
-        pan: string;
         email: string;
         phone: string;
     };
