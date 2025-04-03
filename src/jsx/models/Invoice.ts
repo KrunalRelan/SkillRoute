@@ -16,11 +16,12 @@ export interface Invoice {
         companyId?: number | null;
         companyName: string;
         address: string;
-        gstin: string;
+        gstn: string;
         pan: string;
         email: string;
         phone: string;
         enquiryId: number | null;
+        enquiryName: string | null| undefined;
     };
     items: InvoiceItem[];
     subTotal: number;

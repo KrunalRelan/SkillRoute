@@ -1,159 +1,194 @@
-// /src/components/invoice/InvoiceDetailPage.tsx
-
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Spinner, Card, Table, Button, Alert } from "react-bootstrap";
-import { getInvoiceById } from "../../../services/InvoiceService";
+import { useParams } from "react-router-dom";
 import { Invoice } from "../../models/Invoice";
+import { getInvoiceById } from "../../../services/InvoiceService";
 
-const InvoiceDetail: React.FC = () => {
-	const { id } = useParams<{ id: string }>();
-	const navigate = useNavigate();
-	const [invoice, setInvoice] = useState<Invoice | null>(null);
-	const [loading, setLoading] = useState<boolean>(false);
-	const [error, setError] = useState<string>("");
+const InvoiceDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-	useEffect(() => {
-		const fetchInvoice = async () => {
-			if (!id) {
-				setError("No invoice ID provided.");
-				return;
-			}
-			setLoading(true);
-			try {
-				const data = await getInvoiceById(Number(id));
-				setInvoice(data);
-			} catch (err) {
-				console.error(err);
-				setError("Failed to load invoice details.");
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchInvoice();
-	}, [id]);
+  useEffect(() => {
+    const fetchInvoice = async () => {
+      try {
+        const data = await getInvoiceById(Number(id));
+        setInvoice(data);
+      } catch (error) {
+        console.error("Error fetching invoice:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInvoice();
+  }, [id]);
 
-	const handleBack = () => {
-		navigate(-1);
-	};
+  if (loading) return <div>Loading...</div>;
+  if (!invoice) return <div>Invoice not found.</div>;
 
-	if (loading) {
-		return (
-			<div
-				className="d-flex justify-content-center align-items-center"
-				style={{ minHeight: "50vh" }}>
-				<Spinner animation="border" variant="primary" />
-			</div>
-		);
-	}
+  return (
+    <div className="container" id="invoiceDetails">
+      {/* Print Button */}
+      <div className="text-end mb-3">
+        <button className="btn btn-primary" onClick={() => window.print()}>
+          Print Invoice
+        </button>
+      </div>
 
-	if (error) {
-		return (
-			<div className="container mt-3">
-				<Alert variant="danger">{error}</Alert>
-				<Button variant="secondary" onClick={handleBack}>
-					Back
-				</Button>
-			</div>
-		);
-	}
+      <div className="card">
+        <div className="card-header bg-primary text-white">
+          <h4 className="text-center">Invoice Details</h4>
+        </div>
+        <div className="card-body">
+          {/* Invoice Date */}
+          <div className="mb-3">
+            <label className="form-label">Invoice Date</label>
+            <div className="form-control-plaintext">{invoice.invoiceDate}</div>
+          </div>
 
-	if (!invoice) {
-		return null;
-	}
+          <div className="row mb-4">
+            {/* Billed By Section (Hardcoded) */}
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed By</h5>
+              <div className="mb-2">
+                <strong>Company Name:</strong> <span>Confab 360 Degree</span>
+              </div>
+              <div className="mb-2">
+                <strong>Address:</strong>{" "}
+                <span>Delhi, Delhi, India - 110085</span>
+              </div>
+              <div className="mb-2">
+                <strong>GSTIN:</strong> <span>07AUAPM8136F1ZP</span>
+              </div>
+              <div className="mb-2">
+                <strong>Email:</strong> <span>info@confab360degree.com</span>
+              </div>
+              <div className="mb-2">
+                <strong>Phone:</strong> <span>+91 99719 07777</span>
+              </div>
+            </div>
 
-	return (
-		<div className="container mt-4">
-			<Button variant="secondary" onClick={handleBack} className="mb-3">
-				&larr; Back
-			</Button>
+            {/* Billed To Section */}
+            <div className="col-md-6">
+              <h5 className="text-primary">Billed To</h5>
+              <div className="mb-2">
+                <strong>Company Name:</strong>{" "}
+                <span>{invoice.billedTo.companyName}</span>
+              </div>
+              <div className="mb-2">
+                <strong>Address:</strong>{" "}
+                <span>{invoice.billedTo.address}</span>
+              </div>
+              <div className="mb-2">
+                <strong>GSTIN:</strong>{" "}
+                <span>
+                  {invoice.billedTo.gstn || invoice.billedTo.gstn || "-"}
+                </span>
+              </div>
+              <div className="mb-2">
+                <strong>PAN:</strong> <span>{invoice.billedTo.pan || "-"}</span>
+              </div>
+              <div className="mb-2">
+                <strong>Email:</strong> <span>{invoice.billedTo.email}</span>
+              </div>
+              <div className="mb-2">
+                <strong>Phone:</strong>{" "}
+                <span>{invoice.billedTo.phone || "-"}</span>
+              </div>
+			  <div className="mb-2">
+				<strong>Service:</strong>{" "}
+				<span>
+				  {invoice.billedTo.enquiryName
+					? invoice.billedTo.enquiryName
+					: "-"}
+				</span>			  
+			  </div>
+            </div>
+          </div>
 
-			<Card className="shadow-sm">
-				<Card.Header className="bg-primary text-white">
-					<h4>Invoice Details - #{invoice.invoiceId}</h4>
-				</Card.Header>
-				<Card.Body>
-					<Table bordered>
-						<tbody>
-							<tr>
-								<th>Company ID</th>
-								<td>{invoice.companyId}</td>
-							</tr>
-							<tr>
-								<th>Company Name</th>
-								<td>{invoice.companyName || "N/A"}</td>
-							</tr>
-							<tr>
-								<th>Invoice Date</th>
-								<td>
-									{invoice.invoiceDate
-										? new Date(invoice.invoiceDate).toLocaleDateString()
-										: "N/A"}
-								</td>
-							</tr>
-							<tr>
-								<th>SubTotal</th>
-								<td>{invoice.subTotal.toFixed(2)}</td>
-							</tr>
-							<tr>
-								<th>Commission (20%)</th>
-								<td>{invoice.commissionCut.toFixed(2)}</td>
-							</tr>
-							<tr>
-								<th>Tax</th>
-								<td>{invoice.tax.toFixed(2)}</td>
-							</tr>
-							<tr>
-								<th>Total Amount</th>
-								<td>{invoice.totalAmount.toFixed(2)}</td>
-							</tr>
-							<tr>
-								<th>Payment Status</th>
-								<td>
-									{invoice.paymentStatus === 0
-										? "Unpaid"
-										: invoice.paymentStatus === 1
-										? "Partially Paid"
-										: invoice.paymentStatus === 2
-										? "Paid"
-										: "Unknown"}
-								</td>
-							</tr>
-						</tbody>
-					</Table>
+          {/* Items Table */}
+          <div className="table-responsive">
+            <table className="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Particulars</th>
+                  <th>GST (%)</th>
+                  <th>Quantity</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>Tax</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoice.items.map((item, idx) => {
+                  // If quantity is missing, default to 1.
+                  const quantity = item.quantity ?? 1;
+                  const amount = quantity * item.rate;
+                  const taxAmount = (amount * item.gstPercentage) / 100;
+                  const total = amount + taxAmount;
+                  return (
+                    <tr key={idx}>
+                      <td>{idx + 1}</td>
+                      <td>{item.itemDescription || "-"}</td>
+                      <td>{item.gstPercentage}%</td>
+                      <td>{quantity}</td>
+                      <td>{item.rate.toFixed(2)}</td>
+                      <td>{amount.toFixed(2)}</td>
+                      <td>{taxAmount.toFixed(2)}</td>
+                      <td>{total.toFixed(2)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
-					{/* Display line items */}
-					{invoice.items && invoice.items.length > 0 && (
-						<>
-							<h5 className="mt-4">Line Items</h5>
-							<Table striped bordered hover>
-								<thead className="table-light">
-									<tr>
-										<th>#</th>
-										<th>Description</th>
-										<th>Quantity</th>
-										<th>Rate</th>
-										<th>Amount</th>
-									</tr>
-								</thead>
-								<tbody>
-									{invoice.items.map((item, idx) => (
-										<tr key={idx}>
-											<td>{idx + 1}</td>
-											<td>{item.description}</td>
-											<td>{item.quantity}</td>
-											<td>{item.rate}</td>
-											<td>{item.amount.toFixed(2)}</td>
-										</tr>
-									))}
-								</tbody>
-							</Table>
-						</>
-					)}
-				</Card.Body>
-			</Card>
-		</div>
-	);
+          {/* Invoice Summary */}
+          <div className="text-end my-3">
+            <div className="d-flex justify-content-between">
+              <span>Sub Total:</span>
+              <span>₹{invoice.subTotal.toFixed(2)}</span>
+            </div>
+            {invoice.cgst > 0 || invoice.sgst > 0 ? (
+              <>
+                <div className="d-flex justify-content-between">
+                  <span>CGST:</span>
+                  <span>₹{invoice.cgst.toFixed(2)}</span>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <span>SGST:</span>
+                  <span>₹{invoice.sgst.toFixed(2)}</span>
+                </div>
+              </>
+            ) : (
+              <div className="d-flex justify-content-between">
+                <span>IGST:</span>
+                <span>₹{invoice.tax.toFixed(2)}</span>
+              </div>
+            )}
+            <div className="border-top my-2"></div>
+            <div className="d-flex justify-content-between fw-bold">
+              <span>Total Amount:</span>
+              <span>₹{invoice.totalAmount.toFixed(2)}</span>
+            </div>
+          </div>
+
+          {/* Bank Details */}
+          <div className="mt-4">
+            <h5 className="text-primary">Bank Details</h5>
+            <p>
+              <strong>Account Name:</strong> Confab 360 degree <br />
+              <strong>Account Number:</strong> 181805001263 <br />
+              <strong>IFSC:</strong> ICIC0001818 <br />
+              <strong>Account Type:</strong> Current <br />
+              <strong>Bank:</strong> ICICI Bank Ltd
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default InvoiceDetail;
+export default InvoiceDetails;

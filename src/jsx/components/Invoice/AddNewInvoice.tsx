@@ -39,11 +39,12 @@ const AddNewInvoice: React.FC = () => {
       companyId: null,
       companyName: "",
       address: "",
-      gstin: "",
+      gstn: "",
       pan: "",
       email: "",
       phone: "",
       enquiryId: null,
+      enquiryName: null,
     },
     items: [
       {
@@ -250,9 +251,9 @@ const AddNewInvoice: React.FC = () => {
 
     // GSTIN validation (if needed for India)
     if (
-      formData.billedTo.gstin &&
+      formData.billedTo.gstn &&
       !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-        formData.billedTo.gstin
+        formData.billedTo.gstn
       )
     ) {
       newErrors["billedTo.gstin"] = "Enter a valid GSTIN.";
@@ -548,7 +549,8 @@ const AddNewInvoice: React.FC = () => {
                     (field) =>
                       field !== "companyId" &&
                       field !== "companyName" &&
-                      field !== "enquiryId"
+                      field !== "enquiryId" &&
+                      field !== "enquiryName"
                   )
                   .map((field) => (
                     <div className="form-group my-1" key={field}>
