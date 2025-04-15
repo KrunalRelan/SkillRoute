@@ -144,6 +144,8 @@ const InvoiceDetails: React.FC = () => {
             </table>
           </div>
 
+          
+
           {/* Invoice Summary */}
           <div className="text-end my-3">
             <div className="d-flex justify-content-between">
