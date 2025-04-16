@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -12,6 +12,7 @@ import { getAllCompanies } from "../../../services/CompanyService";
 import { Company } from "../../models/Company";
 import { Enquiry } from "../../models/Enquiry"; // Import Enquiry
 import { Toast, ProgressBar } from "react-bootstrap";
+import InvoicePrint from './InvoicePrint';
 
 const AddNewInvoice: React.FC = () => {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
@@ -25,6 +26,7 @@ const AddNewInvoice: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   // Errors stored as an object where key is the field and value is the error message.
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const printComponentRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState<Invoice>({
     invoiceDate: new Date().toISOString().split("T")[0], // Today's date
@@ -32,6 +34,7 @@ const AddNewInvoice: React.FC = () => {
       companyName: "Confab 360 Degree",
       address: "Delhi, Delhi, India - 110085",
       gstin: "07AUAPM8136F1ZP",
+      pan: "AUAPM8136F",
       email: "info@confab360degree.com",
       phone: "+91 99719 07777",
     },
@@ -53,6 +56,7 @@ const AddNewInvoice: React.FC = () => {
         quantity: 1,
         rate: 0,
         gstPercentage: 0,
+        amount: 0,
       },
     ],
     subTotal: 0,
@@ -143,6 +147,14 @@ const AddNewInvoice: React.FC = () => {
     setFormData((prev) => {
       const items = [...prev.items];
       items[index] = { ...items[index], [field]: value };
+      
+      // Calculate amount whenever quantity or rate changes
+      if (field === 'quantity' || field === 'rate') {
+        const quantity = field === 'quantity' ? value : items[index].quantity;
+        const rate = field === 'rate' ? value : items[index].rate;
+        items[index].amount = quantity * rate;
+      }
+      
       return { ...prev, items };
     });
   };
@@ -166,6 +178,7 @@ const AddNewInvoice: React.FC = () => {
           quantity: 1,
           rate: 0,
           gstPercentage: 0,
+          amount: 0,
         },
       ],
     }));
@@ -341,11 +354,15 @@ const AddNewInvoice: React.FC = () => {
         ...prev,
         billedTo: {
           ...prev.billedTo,
-          companyId: company.companyId,
-          companyName: company.companyName,
+          companyId: company.companyId || null,
+          companyName: company.companyName || "",
           address: company.addressLine || "",
           email: company.email || "",
           phone: company.phone || "",
+          gstn: prev.billedTo.gstn,
+          pan: prev.billedTo.pan,
+          enquiryId: prev.billedTo.enquiryId,
+          enquiryName: prev.billedTo.enquiryName
         },
       }));
     } else {
@@ -369,61 +386,74 @@ const AddNewInvoice: React.FC = () => {
     }));
   };
 
-  return (
-    <div className="container">
-      {/* Toast notification */}
-      <Toast
-        onClose={() => setShowToast(false)}
-        show={showToast}
-        style={{
-          position: "fixed",
-          top: 20,
-          right: 20,
-          minWidth: "250px",
-          zIndex: 9999,
-        }}
-        delay={5000}
-        autohide={!errorMessage} // Only auto-hide for success
-      >
-        <Toast.Header closeButton={true}>
-          <strong className="me-auto">
-            {errorMessage ? "Error" : "Success"}
-          </strong>
-        </Toast.Header>
-        <Toast.Body>
-          {errorMessage || "Invoice created successfully!"}
-          {isLoading && <ProgressBar animated now={progress} />}
-        </Toast.Body>
-      </Toast>
+  // Add print function
+  const handlePrint = () => {
+    window.print();
+  };
 
-      {/* Centered loader */}
-      {isLoading && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(255,255,255,0.7)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1050,
-          }}
-        >
-          <div
-            className="text-center p-4 bg-white rounded shadow"
-            style={{ width: "300px" }}
-          >
-            <h5 className="mb-3">Saving Invoice...</h5>
-            <ProgressBar animated now={progress} className="mb-3" />
-            <p className="text-muted small">Please wait</p>
+  return (
+    <>
+      <div className="container">
+        {/* Hidden print component */}
+        <div style={{ display: 'none' }}>
+          <div ref={printComponentRef}>
+            <InvoicePrint invoice={formData} />
           </div>
         </div>
-      )}
-      <div className="container">
+
+        {/* Toast notification */}
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          style={{
+            position: "fixed",
+            top: 20,
+            right: 20,
+            minWidth: "250px",
+            zIndex: 9999,
+          }}
+          delay={5000}
+          autohide={!errorMessage} // Only auto-hide for success
+        >
+          <Toast.Header closeButton={true}>
+            <strong className="me-auto">
+              {errorMessage ? "Error" : "Success"}
+            </strong>
+          </Toast.Header>
+          <Toast.Body>
+            {errorMessage || "Invoice created successfully!"}
+            {isLoading && <ProgressBar animated now={progress} />}
+          </Toast.Body>
+        </Toast>
+
+        {/* Centered loader */}
+        {isLoading && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(255,255,255,0.7)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1050,
+            }}
+          >
+            <div
+              className="text-center p-4 bg-white rounded shadow"
+              style={{ width: "300px" }}
+            >
+              <h5 className="mb-3">Saving Invoice...</h5>
+              <ProgressBar animated now={progress} className="mb-3" />
+              <p className="text-muted small">Please wait</p>
+            </div>
+          </div>
+        )}
+
         {/* Display all error messages as a summary */}
         {Object.keys(errors).length > 0 && (
           <div className="alert alert-danger">
@@ -612,18 +642,13 @@ const AddNewInvoice: React.FC = () => {
                               const selected = invoiceItems.find(
                                 (i) => i.itemDescription === e.target.value
                               );
-                              handleItemChange(
-                                idx,
-                                "itemDescription",
-                                e.target.value
-                              );
                               if (selected) {
+                                handleItemChange(idx, "itemId", selected.itemId);
+                                handleItemChange(idx, "itemDescription", selected.itemDescription);
                                 handleItemChange(idx, "rate", selected.rate);
-                                handleItemChange(
-                                  idx,
-                                  "gstPercentage",
-                                  selected.gstPercentage
-                                );
+                                handleItemChange(idx, "gstPercentage", selected.gstPercentage);
+                                // Calculate amount after setting rate
+                                handleItemChange(idx, "amount", selected.rate * item.quantity);
                               }
                             }}
                           >
@@ -723,6 +748,9 @@ const AddNewInvoice: React.FC = () => {
               <button className="btn btn-secondary me-2" onClick={addItem}>
                 Add Item
               </button>
+              <button className="btn btn-info me-2" onClick={handlePrint}>
+                Print Invoice
+              </button>
               <button className="btn btn-primary" onClick={handleSubmit}>
                 Submit Invoice
               </button>
@@ -784,7 +812,7 @@ const AddNewInvoice: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

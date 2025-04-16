@@ -6,4 +6,5 @@ export interface InvoiceItem {
     quantity: number;
     rate: number;
     gstPercentage: number;
+    amount: number;
 }
