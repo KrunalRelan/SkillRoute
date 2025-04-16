@@ -39,7 +39,7 @@ import AddNewHotel from "./components/Hotel/AddNewHotel";
 // import AddNewtrainer from './components/trainer/AddNewtrainer';
 
 // Invoice Module
-import OldInvoice from "./components/AppsMenu/Shop/Invoice/Invoice";
+
 import Invoice from "./components/Invoice/InvoiceList";
 import AddNewInvoice from "./components/Invoice/AddNewInvoice";
 
@@ -150,7 +150,7 @@ const Markup = () => {
 		//Inovice
 		{ url: "invoice", component: <InvoiceList /> },
 		{ url: "add-invoice", component: <AddNewInvoice /> },
-		{ url: "old-invoice", component: <OldInvoice /> },
+		
 		{ url: "invoice-detail/:id", component: <InvoiceDetail /> },
 
 		// { url: "user", component: <User /> },

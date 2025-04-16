@@ -124,6 +124,21 @@ export const getCompanyById = async (id: number) => {
     }
 }
 
+export const updateCompany = async (id: number, companyDetails: RegisterCompany) => {
+    try {
+        const token = await getAntiForgeryToken();
+        const response = await axios.put(`${API_URL}/companies/${id}`, companyDetails, {
+            headers: {
+                'X-XSRF-TOKEN': token
+            },
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        Error500(`Failed to update company details: ${error}`);
+    }
+};
+
 export const getCategories = async () => {
     try {
         const response = await axios.get(`${API_URL}/categories`);

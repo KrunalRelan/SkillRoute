@@ -1,13 +1,10 @@
 import { Key } from "react";
 
 export interface InvoiceItem {
-    itemId: string;
-    description: string;
+    itemId: number;
+    itemDescription: string;
     quantity: number;
     rate: number;
-    amount: number;
-    id?: string;
     gstPercentage: number;
-    taxAmount: number;
-    total: number;
+    amount: number;
 }

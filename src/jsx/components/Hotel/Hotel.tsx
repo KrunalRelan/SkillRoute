@@ -216,12 +216,12 @@ const Hotels: React.FC = () => {
     },
 
     {
-      field: "actions" as any, // type assertion: "actions" is not a key of HotelRegistration
+      field: "actions" as any,
       headerName: "Actions",
       align: "center",
       render: (_: any, row: HotelRegistration) =>
         row.id ? (
-          <Link to={`/hotel/${row.id}`} className="btn btn-sm btn-secondary">
+          <Link to={`/hotel-details/${row.id}`} className="btn btn-sm btn-secondary">
             View
           </Link>
         ) : null,

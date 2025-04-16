@@ -13,6 +13,6 @@ export interface Company {
     phone: string | null;
     image: string | null;
     enquirerName: string | null;
-    enquires: Enquiry[];
+    enquiries: Enquiry[];
     invoices: Invoice[];
 }
