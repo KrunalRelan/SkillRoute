@@ -77,10 +77,7 @@ export const MenuList = [
 				title: "Outbound Hotel",
 				to: "hotel",
 			},
-			{
-				title: "Outbound Detail",
-				to: "hotel-details",
-			},
+			
 			{
 				title: "Add New Outbound Hotel",
 				to: "add-hotel",
@@ -109,10 +106,10 @@ export const MenuList = [
 				title: "Add New Invoice",
 				to: "add-invoice",
 			},
-			{
-				title: "Old Invoice",
-				to: "old-invoice",
-			},
+		// {
+		// 			title: "Old Invoice", 
+		// 			to: "old-invoice",
+		// 		},
 		],
 	},
 	// {
