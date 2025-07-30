@@ -34,7 +34,7 @@ const AddNewInvoice: React.FC = () => {
       companyName: "Confab 360 Degree",
       address: "Delhi, Delhi, India - 110085",
       gstin: "07AUAPM8136F1ZP",
-      pan: "AUAPM8136F",
+    
       email: "info@confab360degree.com",
       phone: "+91 99719 07777",
     },
